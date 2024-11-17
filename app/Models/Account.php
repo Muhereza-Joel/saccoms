@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class Member extends Model
+class Account extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -16,24 +16,14 @@ class Member extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
+        'account_number',
+        'account_type',
         'member_id',
-        'first_name',
-        'last_name',
-        'email',
-        'nin',
-        'date_of_birth',
-        'gender',
-        'country',
-        'region',
-        'district',
-        'county',
-        'sub_county',
-        'parish',
-        'village',
-        'phone_number',
-        'membership_type',
+        'amount',
+        'interest_rate',
+        'start_date',
+        'end_date',
         'status',
-        'member_photo',
     ];
 
     protected static function boot()
@@ -45,10 +35,5 @@ class Member extends Model
                 $model->id = Uuid::uuid4();
             }
         });
-    }
-
-    public function accounts()
-    {
-        return $this->hasMany(Account::class);
     }
 }
