@@ -61,4 +61,14 @@ class Member extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function shares()
+    {
+        return $this->hasMany(Share::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(SupportTicket::class);
+    }
 }
