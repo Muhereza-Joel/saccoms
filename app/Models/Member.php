@@ -56,4 +56,9 @@ class Member extends Model
     {
         return $this->hasMany(Loan::class);
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
