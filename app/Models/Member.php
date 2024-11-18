@@ -71,4 +71,9 @@ class Member extends Model
     {
         return $this->hasMany(SupportTicket::class);
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }
