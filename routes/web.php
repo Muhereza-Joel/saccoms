@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\LoansController;
+use App\Http\Controllers\MembersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketsController;
+use App\Http\Controllers\TransactionsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('/members', MembersController::class);
+    Route::resource('/accounts', AccountsController::class);
+    Route::resource('/loans', LoansController::class);
+    Route::resource('/transactions', TransactionsController::class);
+    Route::resource('/tickets', TicketsController::class);
 });
 
 require __DIR__.'/auth.php';
