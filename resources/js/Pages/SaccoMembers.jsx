@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
-export default function Dashboard({ auth }) {
+export default function SaccoMembers({ auth, members }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -22,7 +22,7 @@ export default function Dashboard({ auth }) {
                 </div>
             }
         >
-            <Head title="Dashboard" />
+            <Head title="Members" />
 
             {/* Content */}
             <div className="py-2">
@@ -146,47 +146,51 @@ export default function Dashboard({ auth }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="p-4 border-b dark:border-gray-700">
-                                                    <div class="flex items-center gap-3">
-                                                        <img
-                                                            src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
-                                                            alt="John Michael"
-                                                            class="relative inline-block h-9 w-9 !rounded-full object-cover object-center"
-                                                        />
-                                                        <div class="flex flex-col">
-                                                            John Michael
-                                                            <span class="block text-sm text-gray-500 dark:text-gray-400">
-                                                                john@creative-tim.com
-                                                            </span>
+                                            {members.map((member) => (
+                                                <tr key={member.id}>
+                                                    <td class="px-2 border-b dark:border-gray-700">
+                                                        <div class="flex items-center gap-3">
+                                                            <img
+                                                                src={ member.member_photo_url}
+                                                                alt="John Michael"
+                                                                class="relative inline-block h-9 w-9 !rounded-full object-cover object-center"
+                                                            />
+                                                            <div class="flex flex-col">
+                                                                {` ${member.first_name} ${member.last_name}`}
+                                                                <span class="block text-sm text-gray-500 dark:text-gray-400">
+                                                                    { member.email }
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="p-4 border-b dark:border-gray-700">
-                                                    Manager
-                                                </td>
-                                                <td class="p-4 border-b dark:border-gray-700">
-                                                    Online
-                                                </td>
-                                                <td class="p-4 border-b dark:border-gray-700">
-                                                    23/04/18
-                                                </td>
-                                                <td class="p-4 border-b dark:border-gray-700">
-                                                    <select class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-gray-400 focus:outline-none sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-                                                        <option value="">
-                                                            Select Action
-                                                        </option>
-                                                        <option value="view">
-                                                            View
-                                                        </option>
-                                                        <option value="delete">
-                                                            Delete
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                        { member.member_id }
+                                                    </td>
+                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                    { member.phone_number }
+                                                    </td>
+                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                        { member.date_of_birth }
+                                                    </td>
+                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                        <select class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-gray-400 focus:outline-none sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                                            <option value="">
+                                                                Select Action
+                                                            </option>
+                                                            <option value="view">
+                                                                View
+                                                            </option>
+                                                            <option value="delete">
+                                                                Delete
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
+
+                                    
                                 </div>
                             </div>
                         </div>
