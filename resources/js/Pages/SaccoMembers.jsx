@@ -1,3 +1,4 @@
+import Dropdown from "@/Components/Dropdown";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
@@ -151,46 +152,102 @@ export default function SaccoMembers({ auth, members }) {
                                                     <td class="px-2 border-b dark:border-gray-700">
                                                         <div class="flex items-center gap-3">
                                                             <img
-                                                                src={ member.member_photo_url}
+                                                                src={
+                                                                    member.member_photo_url
+                                                                }
                                                                 alt="John Michael"
                                                                 class="relative inline-block h-9 w-9 !rounded-full object-cover object-center"
                                                             />
                                                             <div class="flex flex-col">
                                                                 {` ${member.first_name} ${member.last_name}`}
                                                                 <span class="block text-sm text-gray-500 dark:text-gray-400">
-                                                                    { member.email }
+                                                                    {
+                                                                        member.email
+                                                                    }
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="p-4 border-b dark:border-gray-700">
-                                                        { member.member_id }
+                                                        {member.member_id}
                                                     </td>
                                                     <td class="p-4 border-b dark:border-gray-700">
-                                                    { member.phone_number }
+                                                        {member.phone_number}
                                                     </td>
                                                     <td class="p-4 border-b dark:border-gray-700">
-                                                        { member.date_of_birth }
+                                                        {member.date_of_birth}
                                                     </td>
                                                     <td class="p-4 border-b dark:border-gray-700">
-                                                        <select class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-gray-400 focus:outline-none sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-                                                            <option value="">
-                                                                Select Action
-                                                            </option>
-                                                            <option value="view">
-                                                                View
-                                                            </option>
-                                                            <option value="delete">
-                                                                Delete
-                                                            </option>
-                                                        </select>
+                                                        <Dropdown>
+                                                            <Dropdown.Trigger>
+                                                                <button
+                                                                    type="button"
+                                                                    className="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                                                                >
+                                                                    Select
+                                                                    Action
+                                                                    <svg
+                                                                        className="ml-2 -mr-0.5 h-4 w-4"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 20 20"
+                                                                        fill="currentColor"
+                                                                    >
+                                                                        <path
+                                                                            fillRule="evenodd"
+                                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                                            clipRule="evenodd"
+                                                                        />
+                                                                    </svg>
+                                                                </button>
+                                                            </Dropdown.Trigger>
+                                                            <Dropdown.Content>
+                                                                <Dropdown.Link
+                                                                    href={route(
+                                                                        "members.show",
+                                                                        member.id
+                                                                    )}
+                                                                >
+                                                                    View Member
+                                                                    Details
+                                                                </Dropdown.Link>
+                                                                <Dropdown.Link
+                                                                    href={route(
+                                                                        "members.index"
+                                                                    )}
+                                                                >
+                                                                    Create
+                                                                    Account
+                                                                </Dropdown.Link>
+                                                                <Dropdown.Link
+                                                                    href={route(
+                                                                        "members.index"
+                                                                    )}
+                                                                >
+                                                                    Member
+                                                                    Transactions
+                                                                </Dropdown.Link>
+                                                                <Dropdown.Link
+                                                                    href={route(
+                                                                        "members.index"
+                                                                    )}
+                                                                >
+                                                                    Member Loans
+                                                                </Dropdown.Link>
+                                                                <Dropdown.Link
+                                                                    href={route(
+                                                                        "members.index"
+                                                                    )}
+                                                                >
+                                                                    Member
+                                                                    Tickets
+                                                                </Dropdown.Link>
+                                                            </Dropdown.Content>
+                                                        </Dropdown>
                                                     </td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
-
-                                    
                                 </div>
                             </div>
                         </div>

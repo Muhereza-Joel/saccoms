@@ -17,7 +17,7 @@ class MembersController extends Controller
             // Assuming 'member_photo' is the field in your Member model storing the image filename
             if ($member->member_photo) {
                 $member->member_photo_url = asset($member->member_photo);
-            } 
+            }
 
             return $member;
         });
@@ -103,7 +103,17 @@ class MembersController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $member = Member::findOrFail($id);
+        $member['member_photo'] = asset($member->member_photo);
+        return Inertia::render(
+            'MemberDetails',
+            [
+                'member' => $member,
+                'loans' => [],
+                'transactions' => [],
+                'accounts' => []
+            ]
+        );
     }
 
     /**
