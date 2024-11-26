@@ -1,4 +1,6 @@
 import Dropdown from "@/Components/Dropdown";
+import InfoRow from "@/Components/InfoRow";
+import Section from "@/Components/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
@@ -293,22 +295,5 @@ export default function MemberDetails({
     );
 }
 
-function Section({ title, children }) {
-    return (
-        <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                {title}
-            </h3>
-            <div className="space-y-2">{children}</div>
-        </div>
-    );
-}
 
-function InfoRow({ label, value }) {
-    return (
-        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-            <span className="font-medium">{label}:</span>
-            <span>{value || "N/A"}</span>
-        </div>
-    );
-}
+
