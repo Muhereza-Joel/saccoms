@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -103,6 +104,7 @@ class MembersController extends Controller
      */
     public function show(string $id)
     {
+        $accounts = Account::where('member_id', $id)->get();
         $member = Member::findOrFail($id);
         $member['member_photo'] = asset($member->member_photo);
         return Inertia::render(
@@ -111,7 +113,7 @@ class MembersController extends Controller
                 'member' => $member,
                 'loans' => [],
                 'transactions' => [],
-                'accounts' => []
+                'accounts' => $accounts
             ]
         );
     }

@@ -44,6 +44,19 @@ export default function Authenticated({ user, header, children }) {
                             Dashboard
                         </NavLink>
                     </li>
+
+                    <li>
+                        <NavLink
+                            href={route("financial-years.index")}
+                            active={route().current("financial-years.index")}
+                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                        >
+                            <FaWallet className="mr-3 text-xl" />
+                            Financial Years
+                        </NavLink>
+                    </li>
+
+                    
                     <li>
                         <NavLink
                             href={route("members.index")}
@@ -57,23 +70,23 @@ export default function Authenticated({ user, header, children }) {
 
                     <li>
                         <NavLink
-                            href={route("financial-years.index")}
-                            active={route().current("financial-years.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaWallet className="mr-3 text-xl" />
-                            Financial Years
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink
                             href={route("accounts.index")}
                             active={route().current("accounts.index")}
                             className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
                         >
                             <FaWallet className="mr-3 text-xl" />
-                            Sacco Accounts
+                            Member Accounts
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink
+                            href={route("transactions.index")}
+                            active={route().current("transactions.index")}
+                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                        >
+                            <FaExchangeAlt className="mr-3 text-xl" />
+                            Member Transactions
                         </NavLink>
                     </li>
 
@@ -87,16 +100,7 @@ export default function Authenticated({ user, header, children }) {
                             Loans
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink
-                            href={route("transactions.index")}
-                            active={route().current("transactions.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaExchangeAlt className="mr-3 text-xl" />
-                            Transactions
-                        </NavLink>
-                    </li>
+
                     <li>
                         <NavLink
                             href={route("tickets.index")}

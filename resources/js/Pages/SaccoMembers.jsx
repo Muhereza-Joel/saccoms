@@ -31,8 +31,8 @@ export default function SaccoMembers({ auth, members }) {
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-2 text-gray-900 dark:text-gray-100">
                             <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl dark:bg-gray-800 dark:text-gray-200 bg-clip-border">
-                                <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border dark:bg-gray-900">
-                                    <div class="flex flex-wrap p-4 items-center justify-between gap-8">
+                                <div class="relative mx-4 mt-2 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border dark:bg-gray-900">
+                                    <div class="flex flex-wrap p-2 items-center justify-between gap-8">
                                         {/* <!-- Buttons --> */}
                                         <div class="flex items-center gap-2 shrink-0">
                                             <button
@@ -126,22 +126,22 @@ export default function SaccoMembers({ auth, members }) {
                                 </div>
                                 {/* <!-- Members Table --> */}
                                 <div class="p-6 px-0">
-                                    <table class="w-full mt-4 text-left table-auto min-w-max">
+                                    <table class="w-full mt-2 text-left table-auto min-w-max">
                                         <thead>
                                             <tr>
-                                                <th class="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     Member
                                                 </th>
-                                                <th class="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     Member ID
                                                 </th>
-                                                <th class="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     Phone Number
                                                 </th>
-                                                <th class="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     Date of Birth
                                                 </th>
-                                                <th class="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     Actions
                                                 </th>
                                             </tr>
@@ -168,16 +168,16 @@ export default function SaccoMembers({ auth, members }) {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                    <td class="p-3 border-b dark:border-gray-700">
                                                         {member.member_id}
                                                     </td>
-                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                    <td class="p-3 border-b dark:border-gray-700">
                                                         {member.phone_number}
                                                     </td>
-                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                    <td class="p-3 border-b dark:border-gray-700">
                                                         {member.date_of_birth}
                                                     </td>
-                                                    <td class="p-4 border-b dark:border-gray-700">
+                                                    <td class="p-3 border-b dark:border-gray-700">
                                                         <Dropdown>
                                                             <Dropdown.Trigger>
                                                                 <button
@@ -212,7 +212,7 @@ export default function SaccoMembers({ auth, members }) {
                                                                 </Dropdown.Link>
                                                                 <Dropdown.Link
                                                                     href={route(
-                                                                        "members.index"
+                                                                        "create-member-account", member.id
                                                                     )}
                                                                 >
                                                                     Create

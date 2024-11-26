@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/members', MembersController::class);
+    Route::get('/member/{id}/account/create', [AccountsController::class, 'createMemberAccount'])->name('create-member-account');
     Route::resource('/accounts', AccountsController::class);
     Route::resource('/financial-years', FinancialYearController::class);
     Route::resource('/loans', LoansController::class);

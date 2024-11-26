@@ -9,7 +9,7 @@ export default function MemberDetails({
     member,
     transactions,
     loans,
-    account,
+    accounts,
 }) {
     return (
         <AuthenticatedLayout
@@ -17,7 +17,7 @@ export default function MemberDetails({
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Member Details
+                        {`Showing Details For ${member.first_name} ${member.last_name}`}
                     </h2>
 
                     {/* Right-aligned dropdown */}
@@ -47,7 +47,12 @@ export default function MemberDetails({
                                 <Dropdown.Link href={route("members.index")}>
                                     List Members
                                 </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
+                                <Dropdown.Link
+                                    href={route(
+                                        "create-member-account",
+                                        member.id
+                                    )}
+                                >
                                     Create Account
                                 </Dropdown.Link>
                                 <Dropdown.Link href={route("members.index")}>
@@ -178,11 +183,11 @@ export default function MemberDetails({
                         <div className="bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <div className="p-6">
                                 <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-                                    Account Details
+                                    {`All accounts for ${member.first_name} ${member.last_name}`}
                                 </h3>
-                                {account && account.length > 0 ? (
+                                {accounts && accounts.length > 0 ? (
                                     <ul className="space-y-4">
-                                        {account.map((acc, index) => (
+                                        {accounts.map((acc, index) => (
                                             <li
                                                 key={index}
                                                 className="border-t border-gray-200 dark:border-gray-700 pt-4"
@@ -196,7 +201,7 @@ export default function MemberDetails({
                                                             Account Number
                                                         </span>
                                                         <span>
-                                                            {acc.number ||
+                                                            {acc.account_number ||
                                                                 "N/A"}
                                                         </span>
                                                     </div>
@@ -205,7 +210,7 @@ export default function MemberDetails({
                                                             Account Balance
                                                         </span>
                                                         <span>
-                                                            {acc.balance ||
+                                                            {`Ugx ${acc.amount}` ||
                                                                 "N/A"}
                                                         </span>
                                                     </div>
@@ -214,7 +219,17 @@ export default function MemberDetails({
                                                             Account Type
                                                         </span>
                                                         <span>
-                                                            {acc.type || "N/A"}
+                                                            {`${acc.account_type} Account` ||
+                                                                "N/A"}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                                        <span>
+                                                            Account Status
+                                                        </span>
+                                                        <span>
+                                                            {`Account ${acc.status}` ||
+                                                                "N/A"}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -294,6 +309,3 @@ export default function MemberDetails({
         </AuthenticatedLayout>
     );
 }
-
-
-
