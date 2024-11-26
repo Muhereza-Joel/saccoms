@@ -55,20 +55,20 @@ export default function CreateMember({ auth, success }) {
                         role="alert"
                     >
                         <span className="block sm:inline">
-                            {success || "Me"}
+                            {success}
                         </span>
                     </div>
                 )}
 
-                <div class="max-w-full rounded shadow-sm m-2 overflow-hidden bg-white dark:bg-gray-800">
-                    <div class="px-4 pt-4 pb-2">
+                <div className="max-w-full rounded shadow-sm m-2 overflow-hidden bg-white dark:bg-gray-800">
+                    <div className="px-4 pt-4 pb-2">
                         <form onSubmit={submit} className="space-y-8">
                             {/* <!-- Personal Identification Section --> */}
-                            <fieldset class="border rounded p-4">
-                                <legend class="text-md font-bold text-gray-700 dark:text-gray-200">
+                            <fieldset className="border rounded p-4">
+                                <legend className="text-md font-bold text-gray-700 dark:text-gray-200">
                                     Member Personal Identification
                                 </legend>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                                     <div>
                                         <InputLabel
                                             htmlFor="first_name"
@@ -227,11 +227,11 @@ export default function CreateMember({ auth, success }) {
                             </fieldset>
 
                             {/* <!-- Location Details Section --> */}
-                            <fieldset class="border rounded p-4">
-                                <legend class="text-md font-bold text-gray-700 dark:text-gray-200">
+                            <fieldset className="border rounded p-4">
+                                <legend className="text-md font-bold text-gray-700 dark:text-gray-200">
                                     Location Details of Member
                                 </legend>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                                     <div>
                                         <InputLabel
                                             htmlFor="country"
@@ -411,11 +411,11 @@ export default function CreateMember({ auth, success }) {
                             </fieldset>
 
                             {/* <!-- Contact Details Section --> */}
-                            <fieldset class="border rounded p-4">
-                                <legend class="text-md font-bold text-gray-700 dark:text-gray-200">
+                            <fieldset className="border rounded p-4">
+                                <legend className="text-md font-bold text-gray-700 dark:text-gray-200">
                                     Contact Details of Member
                                 </legend>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                                     <div>
                                         <InputLabel
                                             htmlFor="phone_number"
@@ -445,11 +445,11 @@ export default function CreateMember({ auth, success }) {
                             </fieldset>
 
                             {/* <!-- Membership Section --> */}
-                            <fieldset class="border rounded p-4">
-                                <legend class="text-md font-bold text-gray-700 dark:text-gray-200">
+                            <fieldset className="border rounded p-4">
+                                <legend className="text-md font-bold text-gray-700 dark:text-gray-200">
                                     Membership Details
                                 </legend>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                                     <div>
                                         <InputLabel
                                             htmlFor="status"
@@ -526,7 +526,7 @@ export default function CreateMember({ auth, success }) {
                             </fieldset>
 
                             {/* <!-- Submit Button --> */}
-                            <div class="flex items-center justify-start">
+                            <div className="flex items-center justify-start">
                                 <PrimaryButton
                                     className="ms-0 mb-3"
                                     disabled={processing}

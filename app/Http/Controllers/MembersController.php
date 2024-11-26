@@ -32,7 +32,7 @@ class MembersController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CreateMember', ['success' => session('success'),]);
+        return Inertia::render('CreateMember', ['success' => session('success')]);
     }
 
     /**

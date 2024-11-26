@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\FinancialYearController;
 use App\Http\Controllers\LoansController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\ProfileController;
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/members', MembersController::class);
     Route::resource('/accounts', AccountsController::class);
+    Route::resource('/financial-years', FinancialYearController::class);
     Route::resource('/loans', LoansController::class);
     Route::resource('/transactions', TransactionsController::class);
     Route::resource('/tickets', TicketsController::class);
