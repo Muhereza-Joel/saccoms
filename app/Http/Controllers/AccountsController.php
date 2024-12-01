@@ -14,7 +14,10 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        return Inertia::render('SaccoAccounts');
+        $accounts = Account::with('member')->get();
+        return Inertia::render('SaccoAccounts', [
+            'accounts' => $accounts
+        ]);
     }
 
     /**

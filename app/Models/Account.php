@@ -41,4 +41,9 @@ class Account extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function member()
+    { 
+        return $this->belongsTo(Member::class);
+    }
 }
