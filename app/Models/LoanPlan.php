@@ -16,6 +16,7 @@ class LoanPlan extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
+        'loan_plan_name',
         'loan_plan_months',
         'loan_plan_interest_rate',
         'loan_plan_penalty',

@@ -20,13 +20,13 @@ export default function Dashboard({ auth, accounts }) {
                         <thead>
                             <tr className="text-gray-800 dark:text-gray-100">
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                    Owner
+                                </th>
+                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                     Account Number
                                 </th>
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                     Account Type
-                                </th>
-                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
-                                    Owner
                                 </th>
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                     Member ID
@@ -49,13 +49,25 @@ export default function Dashboard({ auth, accounts }) {
                                     className="text-gray-800 dark:text-gray-100"
                                 >
                                     <td class="p-2 border-b dark:border-gray-700">
+                                        <div class="flex items-center gap-3">
+                                            <img
+                                                src={acc.member.member_photo_url}
+                                                alt="John Michael"
+                                                class="relative inline-block h-9 w-9 !rounded-full object-cover object-center"
+                                            />
+                                            <div class="flex flex-col">
+                                                {` ${acc.member.first_name} ${acc.member.last_name}`}
+                                                <span class="block text-sm text-gray-500 dark:text-gray-400">
+                                                    {acc.member.email}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 border-b dark:border-gray-700">
                                         {acc.account_number}
                                     </td>
                                     <td class="p-2 border-b dark:border-gray-700">
                                         {`${acc.account_type} Account`}
-                                    </td>
-                                    <td class="p-2 border-b dark:border-gray-700">
-                                        {`${acc.member.first_name} ${acc.member.last_name}`}
                                     </td>
                                     <td class="p-2 border-b dark:border-gray-700">
                                         {acc.member.member_id}
@@ -98,12 +110,9 @@ export default function Dashboard({ auth, accounts }) {
                                                     >
                                                         View Account Details
                                                     </Dropdown.Link>
-                                                    <Dropdown.Link
-                                                        href='#'
-                                                    >
+                                                    <Dropdown.Link href="#">
                                                         Create Transaction
                                                     </Dropdown.Link>
-                                                    
                                                 </Dropdown.Content>
                                             </Dropdown>
                                         </Dropdown>

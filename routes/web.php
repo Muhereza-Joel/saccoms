@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\FinancialYearController;
+use App\Http\Controllers\LoanPlanController;
 use App\Http\Controllers\LoansController;
+use App\Http\Controllers\LoanTypeController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketsController;
@@ -44,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/member/{id}/account/create', [AccountsController::class, 'createMemberAccount'])->name('create-member-account');
     Route::resource('/accounts', AccountsController::class);
     Route::resource('/financial-years', FinancialYearController::class);
+    Route::resource('/loan-types', LoanTypeController::class);
+    Route::resource('/loan-plans', LoanPlanController::class);
     Route::resource('/loans', LoansController::class);
     Route::resource('/transactions', TransactionsController::class);
     Route::resource('/tickets', TicketsController::class);

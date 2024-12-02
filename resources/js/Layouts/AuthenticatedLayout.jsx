@@ -32,7 +32,7 @@ export default function Authenticated({ user, header, children }) {
                 </div>
 
                 <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
-
+                <small className="text-gray-200 dark:text-gray-300">General Section</small>
                 <ul className="mt-4 space-y-2 text-lg">
                     <li>
                         <NavLink
@@ -56,7 +56,6 @@ export default function Authenticated({ user, header, children }) {
                         </NavLink>
                     </li>
 
-                    
                     <li>
                         <NavLink
                             href={route("members.index")}
@@ -90,6 +89,29 @@ export default function Authenticated({ user, header, children }) {
                         </NavLink>
                     </li>
 
+                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
+                    <small className="text-gray-200 dark:text-gray-300">Loans Section</small>
+                    <li>
+                        <NavLink
+                            href={route("loan-plans.index")}
+                            active={route().current("loan-plans.index")}
+                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                        >
+                            <FaMoneyBill className="mr-3 text-xl" />
+                            Loans Plans
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            href={route("loan-types.index")}
+                            active={route().current("loan-types.index")}
+                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                        >
+                            <FaMoneyBill className="mr-3 text-xl" />
+                            Loans Types
+                        </NavLink>
+                    </li>
+                    
                     <li>
                         <NavLink
                             href={route("loans.index")}
@@ -101,6 +123,8 @@ export default function Authenticated({ user, header, children }) {
                         </NavLink>
                     </li>
 
+                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
+                    <small className="text-gray-200 dark:text-gray-300">Support Section</small>
                     <li>
                         <NavLink
                             href={route("tickets.index")}

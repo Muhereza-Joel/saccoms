@@ -14,11 +14,20 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        $accounts = Account::with('member')->get();
+        $accounts = Account::with('member')->get()->map(function ($account) {
+            // Check if the member has a photo and generate the URL
+            if ($account->member && $account->member->member_photo) {
+                $account->member->member_photo_url = asset($account->member->member_photo);
+            }
+
+            return $account;
+        });
+
         return Inertia::render('SaccoAccounts', [
             'accounts' => $accounts
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
