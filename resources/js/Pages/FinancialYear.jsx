@@ -1,10 +1,14 @@
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
-export default function FinancialYear({ auth, years }) {
+export default function FinancialYear({ auth, years, permissions }) {
+    const { can } = usePermission(permissions);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <div className="flex justify-between items-center">
                     {/* Left-aligned title */}
@@ -13,12 +17,14 @@ export default function FinancialYear({ auth, years }) {
                     </h2>
 
                     {/* Right-aligned button */}
-                    <Link
-                        href={route("financial-years.create")}
-                        className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                    >
-                        Create Financial Year
-                    </Link>
+                    {can("Create Financial Year") && (
+                        <Link
+                            href={route("financial-years.create")}
+                            className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                        >
+                            Create Financial Year
+                        </Link>
+                    )}
                 </div>
             }
         >
@@ -48,7 +54,10 @@ export default function FinancialYear({ auth, years }) {
                         </thead>
                         <tbody>
                             {years.map((year) => (
-                                <tr key={year.id} className="text-gray-800 dark:text-gray-100">
+                                <tr
+                                    key={year.id}
+                                    className="text-gray-800 dark:text-gray-100"
+                                >
                                     <td class="p-2 border-b dark:border-gray-700">
                                         {year.name}
                                     </td>

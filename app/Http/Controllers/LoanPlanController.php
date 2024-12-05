@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LoanPlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LoanPlanController extends Controller
@@ -16,7 +17,10 @@ class LoanPlanController extends Controller
         $loanPlans = LoanPlan::all();
         return Inertia::render(
             'LoanPlans',
-            ['loanPlans' => $loanPlans]
+            [
+                'loanPlans' => $loanPlans,
+                'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            ]
         );
     }
 
@@ -27,7 +31,8 @@ class LoanPlanController extends Controller
     {
         return Inertia::render('CreateLoanPlan', [
             'success' => session('success'),
-            'error' => session('error')
+            'error' => session('error'),
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
 

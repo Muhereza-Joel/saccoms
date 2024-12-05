@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class TransactionsController extends Controller
@@ -12,7 +13,9 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Transactions');
+        return Inertia::render('Transactions', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+        ]);
     }
 
     /**

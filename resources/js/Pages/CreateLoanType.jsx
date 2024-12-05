@@ -9,7 +9,7 @@ import { Head, useForm } from "@inertiajs/react";
 import AlertSuccess from "@/Components/AlertSuccess";
 import AlertError from "@/Components/AlertError";
 
-export default function CreateLoanType({ auth, success, error }) {
+export default function CreateLoanType({ auth, success, error, permissions }) {
     const quillRef = useRef(null); // Reference for QuillEditor
     const { data, setData, post, processing, errors, reset } = useForm({
         loan_type_name: "",
@@ -31,6 +31,7 @@ export default function CreateLoanType({ auth, success, error }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     Create Loan Plans

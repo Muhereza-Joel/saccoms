@@ -2,8 +2,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useState } from "react";
+import { usePermission } from "@/Hooks/usePermissions";
 
-export default function LoanPlans({ auth, loanPlans }) {
+export default function LoanPlans({ auth, loanPlans, permissions }) {
+    const { can } = usePermission(permissions);
     const [expanded, setExpanded] = useState(null);
 
     const toggleAccordion = (id) => {
@@ -13,6 +15,7 @@ export default function LoanPlans({ auth, loanPlans }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <div className="flex justify-between items-center">
                     {/* Left-aligned title */}
@@ -21,12 +24,14 @@ export default function LoanPlans({ auth, loanPlans }) {
                     </h2>
 
                     {/* Right-aligned button */}
-                    <Link
-                        href={route("loan-plans.create")}
-                        className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                    >
-                        Create Loan Plan
-                    </Link>
+                    {can("Create Loan Plan") && (
+                        <Link
+                            href={route("loan-plans.create")}
+                            className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                        >
+                            Create Loan Plan
+                        </Link>
+                    )}
                 </div>
             }
         >
@@ -73,26 +78,31 @@ export default function LoanPlans({ auth, loanPlans }) {
 
                                         {/* Action icons */}
                                         <div className="flex items-center space-x-2">
-                                            <Link
-                                                href={route(
-                                                    "loan-plans.edit",
-                                                    plan.id
-                                                )}
-                                                className="text-blue-500 hover:text-blue-700 transition"
-                                            >
-                                                <FaEdit size={15} />
-                                            </Link>
-                                            <Link
-                                                href={route(
-                                                    "loan-plans.destroy",
-                                                    plan.id
-                                                )}
-                                                method="delete"
-                                                as="button"
-                                                className="text-red-400 hover:text-red-700 transition"
-                                            >
-                                                <FaTrash size={15} />
-                                            </Link>
+                                            {can("Update Loan Plan") && (
+                                                <Link
+                                                    href={route(
+                                                        "loan-plans.edit",
+                                                        plan.id
+                                                    )}
+                                                    className="text-blue-500 hover:text-blue-700 transition"
+                                                >
+                                                    <FaEdit size={15} />
+                                                </Link>
+                                            )}
+
+                                            {can("Delete Loan Plan") && (
+                                                <Link
+                                                    href={route(
+                                                        "loan-plans.destroy",
+                                                        plan.id
+                                                    )}
+                                                    method="delete"
+                                                    as="button"
+                                                    className="text-red-400 hover:text-red-700 transition"
+                                                >
+                                                    <FaTrash size={15} />
+                                                </Link>
+                                            )}
                                         </div>
                                     </div>
 
@@ -100,7 +110,8 @@ export default function LoanPlans({ auth, loanPlans }) {
                                     <div className="mt-4">
                                         <p className="text-sm text-gray-600 dark:text-gray-300">
                                             <strong>Repayment Period:</strong>{" "}
-                                            {`${plan.loan_plan_months} Months` || "N/A"}
+                                            {`${plan.loan_plan_months} Months` ||
+                                                "N/A"}
                                         </p>
                                         <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                                             <strong>Interest Rate:</strong>{" "}
@@ -109,8 +120,11 @@ export default function LoanPlans({ auth, loanPlans }) {
                                             %
                                         </p>
                                         <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                            <strong>Missed Payment Penalty:</strong>{" "}
-                                            {`Ugx ${plan.loan_plan_penalty}` || "N/A"}
+                                            <strong>
+                                                Missed Payment Penalty:
+                                            </strong>{" "}
+                                            {`Ugx ${plan.loan_plan_penalty}` ||
+                                                "N/A"}
                                         </p>
                                     </div>
 

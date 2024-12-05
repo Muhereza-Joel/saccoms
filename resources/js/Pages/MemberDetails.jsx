@@ -1,6 +1,7 @@
 import Dropdown from "@/Components/Dropdown";
 import InfoRow from "@/Components/InfoRow";
 import Section from "@/Components/Section";
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
@@ -10,10 +11,14 @@ export default function MemberDetails({
     transactions,
     loans,
     accounts,
+    permissions,
 }) {
+
+    const {can} = usePermission(permissions)
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -44,26 +49,48 @@ export default function MemberDetails({
                                 </button>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
-                                <Dropdown.Link href={route("members.index")}>
-                                    List Members
-                                </Dropdown.Link>
-                                <Dropdown.Link
-                                    href={route(
-                                        "create-member-account",
-                                        member.id
-                                    )}
-                                >
-                                    Create Account
-                                </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
-                                    Member Transactions
-                                </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
-                                    Member Loans
-                                </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
-                                    Member Tickets
-                                </Dropdown.Link>
+                                {can("View Members") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        List Members
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("Create Account") && (
+                                    <Dropdown.Link
+                                        href={route(
+                                            "create-member-account",
+                                            member.id
+                                        )}
+                                    >
+                                        Create Account
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("View Member Transactions") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        Member Transactions
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("View Member Loans") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        Member Loans
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("View Member Tickets") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        Member Tickets
+                                    </Dropdown.Link>
+                                )}
                             </Dropdown.Content>
                         </Dropdown>
                     </div>

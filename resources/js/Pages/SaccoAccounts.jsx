@@ -1,11 +1,15 @@
 import Dropdown from "@/Components/Dropdown";
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Dashboard({ auth, accounts }) {
+export default function Dashboard({ auth, accounts, permissions }) {
+    const { can } = usePermission(permissions);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     Sacco Accounts
@@ -51,7 +55,9 @@ export default function Dashboard({ auth, accounts }) {
                                     <td class="p-2 border-b dark:border-gray-700">
                                         <div class="flex items-center gap-3">
                                             <img
-                                                src={acc.member.member_photo_url}
+                                                src={
+                                                    acc.member.member_photo_url
+                                                }
                                                 alt="John Michael"
                                                 class="relative inline-block h-9 w-9 !rounded-full object-cover object-center"
                                             />
@@ -102,17 +108,26 @@ export default function Dashboard({ auth, accounts }) {
                                                     </button>
                                                 </Dropdown.Trigger>
                                                 <Dropdown.Content>
-                                                    <Dropdown.Link
-                                                        href={route(
-                                                            "accounts.show",
-                                                            acc.id
-                                                        )}
-                                                    >
-                                                        View Account Details
-                                                    </Dropdown.Link>
-                                                    <Dropdown.Link href="#">
-                                                        Create Transaction
-                                                    </Dropdown.Link>
+                                                    {can(
+                                                        "View Account Details"
+                                                    ) && (
+                                                        <Dropdown.Link
+                                                            href={route(
+                                                                "accounts.show",
+                                                                acc.id
+                                                            )}
+                                                        >
+                                                            View Account Details
+                                                        </Dropdown.Link>
+                                                    )}
+
+                                                    {can(
+                                                        "Create Transaction"
+                                                    ) && (
+                                                        <Dropdown.Link href="#">
+                                                            Create Transaction
+                                                        </Dropdown.Link>
+                                                    )}
                                                 </Dropdown.Content>
                                             </Dropdown>
                                         </Dropdown>

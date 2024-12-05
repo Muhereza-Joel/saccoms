@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class TicketsController extends Controller
@@ -12,7 +13,9 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Tickets');
+        return Inertia::render('Tickets', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+        ]);
     }
 
     /**

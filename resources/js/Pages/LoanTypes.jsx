@@ -2,10 +2,14 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { FaEdit, FaTrash } from "react-icons/fa"; // Import icons from react-icons
 import { useState } from "react";
+import { usePermission } from "@/Hooks/usePermissions";
 
-export default function LoanTypes({ auth, loanTypes }) {
+export default function LoanTypes({ auth, loanTypes, permissions }) {
     // Set the first loan's ID as the default expanded card, or null if no loans exist
-    const [expanded, setExpanded] = useState(loanTypes.length > 0 ? loanTypes[0].id : null);
+    const [expanded, setExpanded] = useState(
+        loanTypes.length > 0 ? loanTypes[0].id : null
+    );
+    const { can } = usePermission(permissions);
 
     const toggleAccordion = (id) => {
         setExpanded(expanded === id ? null : id);
@@ -14,6 +18,7 @@ export default function LoanTypes({ auth, loanTypes }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <div className="flex justify-between items-center">
                     {/* Left-aligned title */}
@@ -22,12 +27,14 @@ export default function LoanTypes({ auth, loanTypes }) {
                     </h2>
 
                     {/* Right-aligned button */}
-                    <Link
-                        href={route("loan-types.create")}
-                        className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                    >
-                        Create Loan Type
-                    </Link>
+                    {can("Create Loan Type") && (
+                        <Link
+                            href={route("loan-types.create")}
+                            className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                        >
+                            Create Loan Type
+                        </Link>
+                    )}
                 </div>
             }
         >
@@ -73,27 +80,40 @@ export default function LoanTypes({ auth, loanTypes }) {
 
                                         {/* Action icons */}
                                         <div className="flex items-center space-x-2">
-                                            <Link
-                                                href={route("loan-types.edit", loan.id)}
-                                                className="text-blue-500 hover:text-blue-700 transition"
-                                            >
-                                                <FaEdit size={15} />
-                                            </Link>
-                                            <Link
-                                                href={route("loan-types.destroy", loan.id)}
-                                                method="delete"
-                                                as="button"
-                                                className="text-red-400 hover:text-red-700 transition"
-                                            >
-                                                <FaTrash size={15} />
-                                            </Link>
+                                            {can("Update Loan Type") && (
+                                                <Link
+                                                    href={route(
+                                                        "loan-types.edit",
+                                                        loan.id
+                                                    )}
+                                                    className="text-blue-500 hover:text-blue-700 transition"
+                                                >
+                                                    <FaEdit size={15} />
+                                                </Link>
+                                            )}
+
+                                            {can("Delete Loan Type") && (
+                                                <Link
+                                                    href={route(
+                                                        "loan-types.destroy",
+                                                        loan.id
+                                                    )}
+                                                    method="delete"
+                                                    as="button"
+                                                    className="text-red-400 hover:text-red-700 transition"
+                                                >
+                                                    <FaTrash size={15} />
+                                                </Link>
+                                            )}
                                         </div>
                                     </div>
 
                                     {/* Accordion for description */}
                                     <div className="mt-4">
                                         <button
-                                            onClick={() => toggleAccordion(loan.id)}
+                                            onClick={() =>
+                                                toggleAccordion(loan.id)
+                                            }
                                             className="w-full text-left text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center space-x-2"
                                         >
                                             {/* SVG Icon for expanding/contracting */}

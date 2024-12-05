@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LoanType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LoanTypeController extends Controller
@@ -16,7 +17,10 @@ class LoanTypeController extends Controller
         $loanTypes = LoanType::all();
         return Inertia::render(
             'LoanTypes',
-            ['loanTypes' => $loanTypes]
+            [
+                'loanTypes' => $loanTypes,
+                'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            ]
         );
     }
 
@@ -27,7 +31,8 @@ class LoanTypeController extends Controller
     {
         return Inertia::render('CreateLoanType', [
             'success' => session('success'),
-            'error' => session('error')
+            'error' => session('error'),
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
 

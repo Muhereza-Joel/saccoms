@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FinancialYear;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class FinancialYearController extends Controller
@@ -16,7 +17,10 @@ class FinancialYearController extends Controller
     {
         $years = FinancialYear::all();
 
-        return Inertia::render('FinancialYear', ['years' => $years]);
+        return Inertia::render('FinancialYear', [
+            'years' => $years,
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+        ]);
     }
 
     /**
@@ -24,7 +28,10 @@ class FinancialYearController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CreateFinancialYear', ['success' => session('success')]);
+        return Inertia::render('CreateFinancialYear', [
+            'success' => session('success'),
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+        ]);
     }
 
     /**

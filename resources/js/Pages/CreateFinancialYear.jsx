@@ -4,11 +4,12 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function FinancialYear({ auth, success }) {
-
+export default function FinancialYear({ auth, success, permissions }) {
+    const { can } = usePermission(permissions);
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         start_date: "",
@@ -26,6 +27,7 @@ export default function FinancialYear({ auth, success }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <div className="flex justify-between items-center">
                     {/* Left-aligned title */}
@@ -57,10 +59,11 @@ export default function FinancialYear({ auth, success }) {
                                 </button>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
-                                <Dropdown.Link href={route("financial-years.index")}>
+                                <Dropdown.Link
+                                    href={route("financial-years.index")}
+                                >
                                     List Financial Years
                                 </Dropdown.Link>
-        
                             </Dropdown.Content>
                         </Dropdown>
                     </div>
@@ -95,90 +98,95 @@ export default function FinancialYear({ auth, success }) {
                         </span>
                     </div>
                     <div class="px-4 pt-4 pb-2">
-                        <form onSubmit={submit} className="space-y-8">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-3">
-                                <div>
-                                    <InputLabel
-                                        htmlFor="name"
-                                        value="Name of Financial Year"
-                                    />
-                                    <TextInput
-                                        id="name"
-                                        name="name"
-                                        value={data.name}
-                                        className="mt-1 block w-full"
-                                        autoComplete="name"
-                                        isFocused={false}
-                                        onChange={(e) =>
-                                            setData("name", e.target.value)
-                                        }
-                                        placeholder="Name of financial year goes here."
-                                    />
-                                    <InputError
-                                        message={errors.name}
-                                        className="mt-2"
-                                    />
+                        {can("Create Financial Year") && (
+                            <form onSubmit={submit} className="space-y-8">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-3">
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="name"
+                                            value="Name of Financial Year"
+                                        />
+                                        <TextInput
+                                            id="name"
+                                            name="name"
+                                            value={data.name}
+                                            className="mt-1 block w-full"
+                                            autoComplete="name"
+                                            isFocused={false}
+                                            onChange={(e) =>
+                                                setData("name", e.target.value)
+                                            }
+                                            placeholder="Name of financial year goes here."
+                                        />
+                                        <InputError
+                                            message={errors.name}
+                                            className="mt-2"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="start_date"
+                                            value="Start Date of Financial Year"
+                                        />
+                                        <DateInput
+                                            id="start_date"
+                                            name="start_date"
+                                            value={data.start_date}
+                                            className="mt-1 block w-full"
+                                            autoComplete="start_date"
+                                            isFocused={false}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "start_date",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <InputError
+                                            message={errors.start_date}
+                                            className="mt-2"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="end_date"
+                                            value="Ending Date of Financial Year"
+                                        />
+                                        <DateInput
+                                            id="end_date"
+                                            name="end_date"
+                                            value={data.end_date}
+                                            className="mt-1 block w-full"
+                                            autoComplete="end_date"
+                                            isFocused={false}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "end_date",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <InputError
+                                            message={errors.end_date}
+                                            className="mt-2"
+                                        />
+                                    </div>
                                 </div>
-
-                                <div>
-                                    <InputLabel
-                                        htmlFor="start_date"
-                                        value="Start Date of Financial Year"
-                                    />
-                                    <DateInput
-                                        id="start_date"
-                                        name="start_date"
-                                        value={data.start_date}
-                                        className="mt-1 block w-full"
-                                        autoComplete="start_date"
-                                        isFocused={false}
-                                        onChange={(e) =>
-                                            setData(
-                                                "start_date",
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.start_date}
-                                        className="mt-2"
-                                    />
+                                {/* <!-- Submit Button --> */}
+                                <div className="flex items-center justify-start">
+                                    <PrimaryButton
+                                        className="ms-0 mb-3"
+                                        disabled={processing}
+                                    >
+                                        Save
+                                    </PrimaryButton>
                                 </div>
-
-                                <div>
-                                    <InputLabel
-                                        htmlFor="end_date"
-                                        value="Ending Date of Financial Year"
-                                    />
-                                    <DateInput
-                                        id="end_date"
-                                        name="end_date"
-                                        value={data.end_date}
-                                        className="mt-1 block w-full"
-                                        autoComplete="end_date"
-                                        isFocused={false}
-                                        onChange={(e) =>
-                                            setData("end_date", e.target.value)
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.end_date}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            </div>
-                            {/* <!-- Submit Button --> */}
-                            <div className="flex items-center justify-start">
-                                <PrimaryButton
-                                    className="ms-0 mb-3"
-                                    disabled={processing}
-                                >
-                                    Save
-                                </PrimaryButton>
-                            </div>
-                        </form>
+                            </form>
+                        )}
                     </div>
                 </div>
             </div>

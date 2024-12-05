@@ -8,7 +8,7 @@ import SelectInput from "@/Components/SelectInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import InputError from "@/Components/InputError";
 
-export default function CreateMember({ auth, success }) {
+export default function CreateMember({ auth, success, permissions }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         first_name: "",
         last_name: "",
@@ -39,6 +39,7 @@ export default function CreateMember({ auth, success }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     Create Member

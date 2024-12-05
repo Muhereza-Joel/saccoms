@@ -37,7 +37,10 @@ class MembersController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CreateMember', ['success' => session('success')]);
+        return Inertia::render('CreateMember', [
+            'success' => session('success'),
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+        ]);
     }
 
     /**
@@ -117,7 +120,8 @@ class MembersController extends Controller
                 'member' => $member,
                 'loans' => [],
                 'transactions' => [],
-                'accounts' => $accounts
+                'accounts' => $accounts,
+                'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             ]
         );
     }

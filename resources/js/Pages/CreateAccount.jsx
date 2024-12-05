@@ -7,10 +7,18 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Section from "@/Components/Section";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function MemberDetails({ auth, success, member, accounts }) {
+export default function MemberDetails({
+    auth,
+    success,
+    member,
+    accounts,
+    permissions,
+}) {
+    const { can } = usePermission(permissions);
     const { data, setData, post, processing, errors, reset } = useForm({
         account_type: "",
         member_id: member.id,
@@ -30,6 +38,7 @@ export default function MemberDetails({ auth, success, member, accounts }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -60,18 +69,37 @@ export default function MemberDetails({ auth, success, member, accounts }) {
                                 </button>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
-                                <Dropdown.Link href={route("members.index")}>
-                                    List Members
-                                </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
-                                    Member Transactions
-                                </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
-                                    Member Loans
-                                </Dropdown.Link>
-                                <Dropdown.Link href={route("members.index")}>
-                                    Member Tickets
-                                </Dropdown.Link>
+                                {can("View Members") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        List Members
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("View Member Transactions") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        Member Transactions
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("View Member Loans") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        Member Loans
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("View Member Tickets") && (
+                                    <Dropdown.Link
+                                        href={route("members.index")}
+                                    >
+                                        Member Tickets
+                                    </Dropdown.Link>
+                                )}
                             </Dropdown.Content>
                         </Dropdown>
                     </div>
@@ -87,9 +115,7 @@ export default function MemberDetails({ auth, success, member, accounts }) {
                         className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 px-4 py-3 m-2 rounded relative"
                         role="alert"
                     >
-                        <span className="block sm:inline">
-                            {success}
-                        </span>
+                        <span className="block sm:inline">{success}</span>
                     </div>
                 )}
 
@@ -192,7 +218,7 @@ export default function MemberDetails({ auth, success, member, accounts }) {
                                                             Account Balance
                                                         </span>
                                                         <span>
-                                                        {`Ugx ${acc.amount}` ||
+                                                            {`Ugx ${acc.amount}` ||
                                                                 "N/A"}
                                                         </span>
                                                     </div>
@@ -201,7 +227,8 @@ export default function MemberDetails({ auth, success, member, accounts }) {
                                                             Account Type
                                                         </span>
                                                         <span>
-                                                            {`${acc.account_type} Account` || "N/A"}
+                                                            {`${acc.account_type} Account` ||
+                                                                "N/A"}
                                                         </span>
                                                     </div>
                                                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
@@ -209,7 +236,8 @@ export default function MemberDetails({ auth, success, member, accounts }) {
                                                             Account Status
                                                         </span>
                                                         <span>
-                                                            {`Account ${acc.status}` || "N/A"}
+                                                            {`Account ${acc.status}` ||
+                                                                "N/A"}
                                                         </span>
                                                     </div>
                                                 </div>

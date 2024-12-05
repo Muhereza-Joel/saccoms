@@ -12,8 +12,15 @@ import {
     FaExchangeAlt,
     FaTicketAlt,
 } from "react-icons/fa";
+import { usePermission } from "@/Hooks/usePermissions";
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({
+    user,
+    header,
+    children,
+    permissions = [],
+}) {
+    const { can } = usePermission(permissions);
     const [showLeftPane, setShowLeftPane] = useState(false);
 
     return (
@@ -32,7 +39,9 @@ export default function Authenticated({ user, header, children }) {
                 </div>
 
                 <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
-                <small className="text-gray-200 dark:text-gray-300">General Section</small>
+                <small className="text-gray-200 dark:text-gray-300">
+                    General Section
+                </small>
                 <ul className="mt-4 space-y-2 text-lg">
                     <li>
                         <NavLink
@@ -45,74 +54,90 @@ export default function Authenticated({ user, header, children }) {
                         </NavLink>
                     </li>
 
-                    <li>
-                        <NavLink
-                            href={route("financial-years.index")}
-                            active={route().current("financial-years.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaWallet className="mr-3 text-xl" />
-                            Financial Years
-                        </NavLink>
-                    </li>
+                    {can("View Financial Years") && (
+                        <li>
+                            <NavLink
+                                href={route("financial-years.index")}
+                                active={route().current(
+                                    "financial-years.index"
+                                )}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaWallet className="mr-3 text-xl" />
+                                Financial Years
+                            </NavLink>
+                        </li>
+                    )}
 
-                    <li>
-                        <NavLink
-                            href={route("members.index")}
-                            active={route().current("members.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaUsers className="mr-3 text-xl" />
-                            Sacco Members
-                        </NavLink>
-                    </li>
+                    {can("View Members") && (
+                        <li>
+                            <NavLink
+                                href={route("members.index")}
+                                active={route().current("members.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaUsers className="mr-3 text-xl" />
+                                Sacco Members
+                            </NavLink>
+                        </li>
+                    )}
 
-                    <li>
-                        <NavLink
-                            href={route("accounts.index")}
-                            active={route().current("accounts.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaWallet className="mr-3 text-xl" />
-                            Member Accounts
-                        </NavLink>
-                    </li>
+                    {can("View Accounts") && (
+                        <li>
+                            <NavLink
+                                href={route("accounts.index")}
+                                active={route().current("accounts.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaWallet className="mr-3 text-xl" />
+                                Member Accounts
+                            </NavLink>
+                        </li>
+                    )}
 
-                    <li>
-                        <NavLink
-                            href={route("transactions.index")}
-                            active={route().current("transactions.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaExchangeAlt className="mr-3 text-xl" />
-                            Member Transactions
-                        </NavLink>
-                    </li>
+                    {can("View Transactions") && (
+                        <li>
+                            <NavLink
+                                href={route("transactions.index")}
+                                active={route().current("transactions.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaExchangeAlt className="mr-3 text-xl" />
+                                Member Transactions
+                            </NavLink>
+                        </li>
+                    )}
 
-                    <li>
-                        <NavLink
-                            href={route("roles.index")}
-                            active={route().current("roles.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaExchangeAlt className="mr-3 text-xl" />
-                            Manage Roles
-                        </NavLink>
-                    </li>
+                    {can("Create Role") && (
+                        <li>
+                            <NavLink
+                                href={route("roles.index")}
+                                active={route().current("roles.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaExchangeAlt className="mr-3 text-xl" />
+                                Manage Roles
+                            </NavLink>
+                        </li>
+                    )}
 
-                    <li>
-                        <NavLink
-                            href={route("assign-permissions")}
-                            active={route().current("assign-permissions")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaExchangeAlt className="mr-3 text-xl" />
-                            Assign Permissions
-                        </NavLink>
-                    </li>
+                    {can("Create Role") && (
+                        <li>
+                            <NavLink
+                                href={route("assign-permissions")}
+                                active={route().current("assign-permissions")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaExchangeAlt className="mr-3 text-xl" />
+                                Assign Permissions
+                            </NavLink>
+                        </li>
+                    )}
 
                     <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
-                    <small className="text-gray-200 dark:text-gray-300">Loans Section</small>
+                    <small className="text-gray-200 dark:text-gray-300">
+                        Loans Section
+                    </small>
                     <li>
                         <NavLink
                             href={route("loan-plans.index")}
@@ -133,7 +158,7 @@ export default function Authenticated({ user, header, children }) {
                             Loans Types
                         </NavLink>
                     </li>
-                    
+
                     <li>
                         <NavLink
                             href={route("loans.index")}
@@ -146,7 +171,9 @@ export default function Authenticated({ user, header, children }) {
                     </li>
 
                     <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
-                    <small className="text-gray-200 dark:text-gray-300">Support Section</small>
+                    <small className="text-gray-200 dark:text-gray-300">
+                        Support Section
+                    </small>
                     <li>
                         <NavLink
                             href={route("tickets.index")}

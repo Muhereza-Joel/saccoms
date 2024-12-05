@@ -6,6 +6,7 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
@@ -23,6 +24,7 @@ class RoleController extends Controller
             'error' => session('error'),
             'roles' => $roles,
             'permissions' => $permissions,
+            'userPermissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
 
@@ -109,7 +111,8 @@ class RoleController extends Controller
             'success' => session('success'),
             'error' => session('error'),
             'roles' => $roles,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'userPermissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
 
