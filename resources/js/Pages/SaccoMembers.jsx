@@ -1,8 +1,11 @@
 import Dropdown from "@/Components/Dropdown";
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
-export default function SaccoMembers({ auth, members }) {
+export default function SaccoMembers({ auth, members, permissions }) {
+    const { can } = usePermission(permissions);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -13,13 +16,14 @@ export default function SaccoMembers({ auth, members }) {
                         Sacco Members
                     </h2>
 
-                    {/* Right-aligned button */}
-                    <Link
-                        href={route("members.create")}
-                        className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                    >
-                        Add Member
-                    </Link>
+                    {can("Create Member") && (
+                        <Link
+                            href={route("members.create")}
+                            className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                        >
+                            Add Member
+                        </Link>
+                    )}
                 </div>
             }
         >
@@ -212,7 +216,8 @@ export default function SaccoMembers({ auth, members }) {
                                                                 </Dropdown.Link>
                                                                 <Dropdown.Link
                                                                     href={route(
-                                                                        "create-member-account", member.id
+                                                                        "create-member-account",
+                                                                        member.id
                                                                     )}
                                                                 >
                                                                     Create

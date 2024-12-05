@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MembersController extends Controller
@@ -23,7 +24,10 @@ class MembersController extends Controller
             return $member;
         });
 
-        return Inertia::render('SaccoMembers', ['members' => $members]);
+        return Inertia::render('SaccoMembers', [
+            'members' => $members,
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+        ]);
     }
 
 

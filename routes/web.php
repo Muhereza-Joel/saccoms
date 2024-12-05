@@ -53,8 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/loans', LoansController::class);
     Route::resource('/transactions', TransactionsController::class);
     Route::resource('/tickets', TicketsController::class);
+    Route::get('/assign/permissions', [RoleController::class, 'assignPermissions'])->name('assign-permissions');
+    Route::post('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.save-assigned-permissions');
     Route::resource('/roles', RoleController::class);
     Route::resource('/permissions', PermissionController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

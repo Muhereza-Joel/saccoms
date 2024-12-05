@@ -99,4 +99,30 @@ class RoleController extends Controller
 
         return redirect()->back()->with('success', 'Role deleted successfully!');
     }
+
+    public function assignPermissions()
+    {
+        $roles = Role::with('permissions')->get(); // Load roles with their assigned permissions
+        $permissions = Permission::all();
+
+        return Inertia::render('AssignPermissions', [
+            'success' => session('success'),
+            'error' => session('error'),
+            'roles' => $roles,
+            'permissions' => $permissions
+        ]);
+    }
+
+    public function updatePermissions(Request $request, Role $role)
+    {
+        $validated = $request->validate([
+            'assignedPermissions' => 'array',
+            'assignedPermissions.*' => 'exists:permissions,uuid',
+        ]);
+
+        $permissionIds = Permission::whereIn('uuid', $validated['assignedPermissions'])->pluck('uuid');
+        $role->syncPermissions($permissionIds); // Sync by ID
+
+        return redirect()->back()->with('success', 'Permissions updated successfully!');
+    }
 }
