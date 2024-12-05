@@ -6,7 +6,9 @@ use App\Http\Controllers\LoanPlanController;
 use App\Http\Controllers\LoansController;
 use App\Http\Controllers\LoanTypeController;
 use App\Http\Controllers\MembersController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\TransactionsController;
 use Illuminate\Foundation\Application;
@@ -51,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/loans', LoansController::class);
     Route::resource('/transactions', TransactionsController::class);
     Route::resource('/tickets', TicketsController::class);
+    Route::resource('/roles', RoleController::class);
+    Route::resource('/permissions', PermissionController::class);
 });
 
 require __DIR__.'/auth.php';
