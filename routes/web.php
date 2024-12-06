@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,13 +29,9 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', ['permissions' => Auth::user()->getAllPermissions()->pluck('name')]);
@@ -56,8 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/tickets', TicketsController::class);
     Route::get('/assign/permissions', [RoleController::class, 'assignPermissions'])->name('assign-permissions');
     Route::post('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.save-assigned-permissions');
-    Route::resource('/roles', RoleController::class);
-    Route::resource('/permissions', PermissionController::class);
+    
+    Route::resource('/roles', RoleController::class)->middleware('role:root');
+    Route::resource('/permissions', PermissionController::class)->middleware('role:root');
+    Route::resource('/users', UsersController::class)->middleware('role:root|admin');
 });
 
 require __DIR__ . '/auth.php';

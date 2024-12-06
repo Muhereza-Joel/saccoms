@@ -239,6 +239,18 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                                                 )}
 
                                                                 {can(
+                                                                    "Create Transaction"
+                                                                ) && (
+                                                                    <Dropdown.Link
+                                                                        href={route(
+                                                                            "transactions.create"
+                                                                        )}
+                                                                    >
+                                                                        Create Transaction
+                                                                    </Dropdown.Link>
+                                                                )}
+
+                                                                {can(
                                                                     "View Member Transactions"
                                                                 ) && (
                                                                     <Dropdown.Link

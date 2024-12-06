@@ -11,6 +11,15 @@ import {
     FaMoneyBill,
     FaExchangeAlt,
     FaTicketAlt,
+    FaClipboardList,
+    FaCogs,
+    FaHandHoldingUsd,
+    FaFileInvoiceDollar,
+    FaUserShield,
+    FaLifeRing,
+    FaPiggyBank,
+    FaChartPie,
+    FaBriefcase,
 } from "react-icons/fa";
 import { usePermission } from "@/Hooks/usePermissions";
 
@@ -31,9 +40,8 @@ export default function Authenticated({
                     showLeftPane ? "translate-x-0" : "-translate-x-full"
                 } sm:translate-x-0`}
             >
-                <div className="font-bold text-gray-800 dark:text-gray-200">
+                <div className="font-bold text-center text-gray-800 dark:text-gray-200">
                     <Link href="/" className="text-white">
-                        <ApplicationLogo className="block h-9 w-auto text-white fill-current text-gray-800 dark:text-gray-200" />
                         Sacco Management System
                     </Link>
                 </div>
@@ -115,7 +123,7 @@ export default function Authenticated({
                                 active={route().current("roles.index")}
                                 className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
                             >
-                                <FaExchangeAlt className="mr-3 text-xl" />
+                                <FaUserShield className="mr-3 text-xl" />
                                 Manage Roles
                             </NavLink>
                         </li>
@@ -128,62 +136,89 @@ export default function Authenticated({
                                 active={route().current("assign-permissions")}
                                 className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
                             >
-                                <FaExchangeAlt className="mr-3 text-xl" />
+                                <FaCogs className="mr-3 text-xl" />
                                 Assign Permissions
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {can("View Users") && (
+                        <li>
+                            <NavLink
+                                href={route("users.index")}
+                                active={route().current("users.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaBriefcase className="mr-3 text-xl" />
+                                Manage Users
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {can("Create Loan") && (
+                        <>
+                            <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
+                            <small className="text-gray-200 dark:text-gray-300">
+                                Loans Section
+                            </small>
+                        </>
+                    )}
+                    {can("Create Loan Plan") && (
+                        <li>
+                            <NavLink
+                                href={route("loan-plans.index")}
+                                active={route().current("loan-plans.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaHandHoldingUsd className="mr-3 text-xl" />
+                                Loans Plans
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {can("Create Loan Type") && (
+                        <li>
+                            <NavLink
+                                href={route("loan-types.index")}
+                                active={route().current("loan-types.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaChartPie className="mr-3 text-xl" />
+                                Loans Types
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {can("Create Loan") && (
+                        <li>
+                            <NavLink
+                                href={route("loans.index")}
+                                active={route().current("loans.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaMoneyBill className="mr-3 text-xl" />
+                                Loans
                             </NavLink>
                         </li>
                     )}
 
                     <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
                     <small className="text-gray-200 dark:text-gray-300">
-                        Loans Section
-                    </small>
-                    <li>
-                        <NavLink
-                            href={route("loan-plans.index")}
-                            active={route().current("loan-plans.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaMoneyBill className="mr-3 text-xl" />
-                            Loans Plans
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            href={route("loan-types.index")}
-                            active={route().current("loan-types.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaMoneyBill className="mr-3 text-xl" />
-                            Loans Types
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink
-                            href={route("loans.index")}
-                            active={route().current("loans.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaMoneyBill className="mr-3 text-xl" />
-                            Loans
-                        </NavLink>
-                    </li>
-
-                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
-                    <small className="text-gray-200 dark:text-gray-300">
                         Support Section
                     </small>
-                    <li>
-                        <NavLink
-                            href={route("tickets.index")}
-                            active={route().current("tickets.index")}
-                            className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
-                        >
-                            <FaTicketAlt className="mr-3 text-xl" />
-                            Support Tickets
-                        </NavLink>
-                    </li>
+
+                    {can("Create Support Ticket") && (
+                        <li>
+                            <NavLink
+                                href={route("tickets.index")}
+                                active={route().current("tickets.index")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaLifeRing className="mr-3 text-xl" />
+                                Support Tickets
+                            </NavLink>
+                        </li>
+                    )}
                 </ul>
             </div>
 
@@ -197,7 +232,7 @@ export default function Authenticated({
 
             {/* Main Content */}
             <div className="flex-1 ml-0 sm:ml-64">
-                <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+                <nav className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
                             <div className="flex items-center space-x-4">
@@ -221,6 +256,7 @@ export default function Authenticated({
                                         />
                                     </svg>
                                 </button>
+                                <ApplicationLogo className="block h-9 w-auto text-white fill-current text-gray-800 dark:text-gray-200" />
                                 <input
                                     type="text"
                                     placeholder="Search..."
