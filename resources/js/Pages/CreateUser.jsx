@@ -43,7 +43,7 @@ export default function Create({ auth, success, error, permissions, roles }) {
                 {/* Display Error Message */}
                 {error && <AlertError error={error} />}
 
-                <div class="max-w-full rounded shadow-sm m-2 overflow-hidden bg-white dark:bg-gray-800">
+                <div className="max-w-full rounded shadow-sm m-2 overflow-hidden bg-white dark:bg-gray-800">
                     <div
                         className="bg-orange-100 dark:bg-orange-900 border border-orange-400 dark:border-orange-700 text-orange-700 dark:text-orange-300 px-4 py-3 m-2 rounded relative"
                         role="alert"
@@ -57,10 +57,11 @@ export default function Create({ auth, success, error, permissions, roles }) {
                         </span>
                     </div>
 
-                    <div class="px-4 pt-4 pb-2">
+                    <div className="px-4 pt-4 pb-2">
                         {can("Create User") && (
                             <form onSubmit={submit} className="space-y-8">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-3">
+                                {/* Form fields arranged in column layout */}
+                                <div className="space-y-6">
                                     <div>
                                         <InputLabel
                                             htmlFor="name"
@@ -188,7 +189,7 @@ export default function Create({ auth, success, error, permissions, roles }) {
                                         />
                                     </div>
 
-                                    {/* <!-- Submit Button --> */}
+                                    {/* Submit Button */}
                                     <div className="flex items-center justify-start">
                                         <PrimaryButton
                                             className="ms-0 mb-3"

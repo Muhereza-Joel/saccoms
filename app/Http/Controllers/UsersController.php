@@ -16,10 +16,14 @@ class UsersController extends Controller
      */
     public function index()
     {
+        // Fetch users along with roles and permissions
+        $users = User::with(['roles', 'permissions'])->get();
+
         return Inertia::render('Users', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             'success' => session('success'),
             'error' => session('error'),
+            'users' => $users, // Includes roles and permissions
         ]);
     }
 
@@ -56,7 +60,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
-            'role' => 'required', 
+            'role' => 'required',
         ], $messages);
 
         // Extract the role UUID and find the role
