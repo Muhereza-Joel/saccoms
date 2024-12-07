@@ -8,6 +8,18 @@ use Inertia\Inertia;
 
 class LoansController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:Create Loan')->only('create');
+        $this->middleware('permission:Create Loan')->only('store');
+        $this->middleware('permission:View Loans')->only('index');
+        $this->middleware('permission:View Loan Details')->only('show');
+        $this->middleware('permission:Update Loan')->only('edit');
+        $this->middleware('permission:Update Loan')->only('update');
+        $this->middleware('permission:Delete Loan')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

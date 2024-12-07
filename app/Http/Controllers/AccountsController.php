@@ -10,6 +10,18 @@ use Inertia\Inertia;
 
 class AccountsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create Account')->only('create');
+        $this->middleware('permission:Create Account')->only('createMemberAccount');
+        $this->middleware('permission:Create Account')->only('store');
+        $this->middleware('permission:View Accounts')->only('index');
+        $this->middleware('permission:View Account Details')->only('show');
+        $this->middleware('permission:Update Account Details')->only('edit');
+        $this->middleware('permission:Update Account Details')->only('update');
+        $this->middleware('permission:Delete Account')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

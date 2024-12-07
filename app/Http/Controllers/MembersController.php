@@ -10,6 +10,16 @@ use Inertia\Inertia;
 
 class MembersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create Member')->only('create');
+        $this->middleware('permission:Create Member')->only('store');
+        $this->middleware('permission:View Members')->only('index');
+        $this->middleware('permission:View Member Details')->only('show');
+        $this->middleware('permission:Update Member')->only('edit');
+        $this->middleware('permission:Update Member')->only('store');
+        $this->middleware('permission:Delete Member')->only('delete');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,8 +39,6 @@ class MembersController extends Controller
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
-
-
 
     /**
      * Show the form for creating a new resource.

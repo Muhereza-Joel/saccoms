@@ -11,6 +11,20 @@ use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create Role')->only('create');
+        $this->middleware('permission:Create Role')->only('store');
+        $this->middleware('permission:View Roles')->only('index');
+        $this->middleware('permission:View Roles')->only('show');
+        $this->middleware('permission:Update Role')->only('edit');
+        $this->middleware('permission:Update Role')->only('update');
+        $this->middleware('permission:Delete Role')->only('destroy');
+
+        $this->middleware('permission:Assign Permission')->only('assignPermissions');
+        $this->middleware('permission:Update Permission')->only('updatePermissions');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -88,8 +102,6 @@ class RoleController extends Controller
 
         return redirect()->back()->with('success', 'Role updated successfully!');
     }
-
-
 
     /**
      * Remove the specified resource from storage.

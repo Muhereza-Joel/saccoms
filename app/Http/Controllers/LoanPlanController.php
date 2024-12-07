@@ -9,6 +9,17 @@ use Inertia\Inertia;
 
 class LoanPlanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create Loan Plan')->only('create');
+        $this->middleware('permission:Create Loan Plan')->only('store');
+        $this->middleware('permission:View Loan Plans')->only('index');
+        $this->middleware('permission:View Loan Plan Details')->only('show');
+        $this->middleware('permission:Update Loan Plan')->only('edit');
+        $this->middleware('permission:Update Loan Plan')->only('update');
+        $this->middleware('permission:Delete Loan Plan')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -60,9 +71,6 @@ class LoanPlanController extends Controller
         return redirect()->route('loan-plans.create')
             ->with('success', 'Loan plan created successfully!');
     }
-
-
-
 
     /**
      * Display the specified resource.

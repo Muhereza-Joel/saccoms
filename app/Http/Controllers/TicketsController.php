@@ -8,6 +8,17 @@ use Inertia\Inertia;
 
 class TicketsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create Support Ticket')->only('create');
+        $this->middleware('permission:Create Support Ticket')->only('store');
+        $this->middleware('permission:View Support Tickets')->only('index');
+        $this->middleware('permission:View Support Ticket Details')->only('show');
+        $this->middleware('permission:Update Support Ticket')->only('edit');
+        $this->middleware('permission:Update Support Ticket')->only('update');
+        $this->middleware('permission:Delete Support Ticket')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

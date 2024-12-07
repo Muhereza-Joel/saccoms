@@ -11,6 +11,17 @@ use Inertia\Inertia;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create User')->only('create');
+        $this->middleware('permission:View Users')->only('store');
+        $this->middleware('permission:Create User')->only('index');
+        $this->middleware('permission:View User Details')->only('show');
+        $this->middleware('permission:Update User Details')->only('edit');
+        $this->middleware('permission:Update User Details')->only('update');
+        $this->middleware('permission:Delete User')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

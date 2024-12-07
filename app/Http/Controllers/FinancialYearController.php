@@ -10,6 +10,18 @@ use Inertia\Inertia;
 
 class FinancialYearController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:Create Financial Year')->only('create');
+        $this->middleware('permission:Create Financial Year')->only('store');
+        $this->middleware('permission:View Financial Years')->only('index');
+        $this->middleware('permission:View Financial Year Details')->only('show');
+        $this->middleware('permission:Update Financial Year Details')->only('edit');
+        $this->middleware('permission:Update Financial Year Details')->only('update');
+        $this->middleware('permission:Delete Financial Year')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

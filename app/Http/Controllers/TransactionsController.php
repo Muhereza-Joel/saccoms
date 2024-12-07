@@ -8,6 +8,17 @@ use Inertia\Inertia;
 
 class TransactionsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Create Transaction')->only('create');
+        $this->middleware('permission:Create Transaction')->only('store');
+        $this->middleware('permission:View Transactions')->only('index');
+        $this->middleware('permission:View Transaction Details')->only('show');
+        $this->middleware('permission:Update Transaction')->only('edit');
+        $this->middleware('permission:Update Transaction')->only('update');
+        $this->middleware('permission:Delete Transaction')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */
