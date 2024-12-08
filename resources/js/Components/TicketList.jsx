@@ -1,7 +1,6 @@
 import { FaSync, FaTrash } from "react-icons/fa";
 import { useState } from "react";
-import SelectInput from "@/Components/SelectInput";
-import Modal from "@/Components/Modal";
+import { usePermission } from "@/Hooks/usePermissions";
 
 export default function TicketList({
     tickets,
@@ -9,29 +8,15 @@ export default function TicketList({
     assignedTicketUser,
     permissions,
     allowEdit,
+    openModal,
 }) {
     const [expanded, setExpanded] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedTicket, setSelectedTicket] = useState(null);
 
     const toggleAccordion = (id) => {
         setExpanded(expanded === id ? null : id);
     };
 
-    const openModal = (ticket) => {
-        setSelectedTicket(ticket);
-        setShowModal(true);
-    };
-
-    const closeModal = () => {
-        setShowModal(false);
-        setSelectedTicket(null);
-    };
-
-    const updateStatus = () => {
-        // Handle status update logic
-        closeModal();
-    };
+    const { can } = usePermission(permissions)
 
     const deleteTicket = (id) => {
         if (confirm("Are you sure you want to delete this ticket?")) {
@@ -122,9 +107,9 @@ export default function TicketList({
                                     </div>
                                 )}
                             </div>
-                            
+
                             <div className="flex space-x-2">
-                                {allowEdit && (
+                                {can('Update Support Ticket') && (
                                     <button
                                         onClick={() => openModal(ticket)}
                                         className="text-blue-500 hover:text-blue-700 transition"
@@ -161,35 +146,6 @@ export default function TicketList({
                     </div>
                 </div>
             ))}
-
-            {/* Modal for Updating Status */}
-            {showModal && (
-                <Modal show={showModal} onClose={closeModal}>
-                    <div className="p-6">
-                        <h2 className="text-lg font-semibold">
-                            Update Ticket Status
-                        </h2>
-                        <SelectInput
-                            options={[
-                                { value: "In Progress", label: "In Progress" },
-                                { value: "Resolved", label: "Resolved" },
-                                { value: "Closed", label: "Closed" },
-                            ]}
-                        />
-                        <div className="mt-4 flex justify-end">
-                            <button onClick={closeModal} className="mr-2">
-                                Cancel
-                            </button>
-                            <button
-                                onClick={updateStatus}
-                                className="bg-blue-600"
-                            >
-                                Update
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
-            )}
         </div>
     );
 }
