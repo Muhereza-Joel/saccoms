@@ -60,4 +60,9 @@ class User extends Authenticatable
             }
         });
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(SupportTicket::class, 'assigned_to', 'id');
+    }
 }

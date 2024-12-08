@@ -34,7 +34,7 @@ export default function CreateLoanType({ auth, success, error, permissions }) {
             permissions={permissions}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Create Loan Plans
+                    Create Loan Type
                 </h2>
             }
         >
