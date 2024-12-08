@@ -239,6 +239,20 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                                                 )}
 
                                                                 {can(
+                                                                    "Create Loan"
+                                                                ) && (
+                                                                    <Dropdown.Link
+                                                                        href={route(
+                                                                            "create-member-loan-application",
+                                                                            member.id
+                                                                        )}
+                                                                    >
+                                                                        Create
+                                                                        Loan Application
+                                                                    </Dropdown.Link>
+                                                                )}
+
+                                                                {can(
                                                                     "Create Transaction"
                                                                 ) && (
                                                                     <Dropdown.Link

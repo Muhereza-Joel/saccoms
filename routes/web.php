@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/loan-types', LoanTypeController::class);
     Route::resource('/loan-plans', LoanPlanController::class);
     Route::resource('/loans', LoansController::class);
+    Route::get('/member/{id}/loan-application/create', [LoansController::class, 'createMemberLoanApplication'])->name('create-member-loan-application');
     Route::resource('/transactions', TransactionsController::class);
     Route::resource('/tickets', TicketsController::class);
     Route::get('/assign/permissions', [RoleController::class, 'assignPermissions'])->name('assign-permissions');

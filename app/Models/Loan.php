@@ -18,6 +18,8 @@ class Loan extends Model
     protected $fillable = [
         'member_id',
         'loan_type',
+        'loan_plan',
+        'reference_number',
         'principal_amount',
         'interest_rate',
         'repayment_period',

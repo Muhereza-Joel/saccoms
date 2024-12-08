@@ -13,8 +13,7 @@ export default function MemberDetails({
     accounts,
     permissions,
 }) {
-
-    const {can} = usePermission(permissions)
+    const { can } = usePermission(permissions);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -65,6 +64,17 @@ export default function MemberDetails({
                                         )}
                                     >
                                         Create Account
+                                    </Dropdown.Link>
+                                )}
+
+                                {can("Create Loan") && (
+                                    <Dropdown.Link
+                                        href={route(
+                                            "create-member-loan-application",
+                                            member.id
+                                        )}
+                                    >
+                                        Create Loan Application
                                     </Dropdown.Link>
                                 )}
 

@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, createContext, useContext, Fragment } from "react";
+import {
+    useState,
+    useRef,
+    useEffect,
+    createContext,
+    useContext,
+    Fragment,
+} from "react";
 import { Link } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 
@@ -10,7 +17,31 @@ const Dropdown = ({ children }) => {
     const dropdownRef = useRef(null);
 
     const toggleOpen = () => {
-        setOpen((previousState) => !previousState);
+        setOpen((previousState) => {
+            const newState = !previousState;
+
+            if (newState && dropdownRef.current) {
+                // Recalculate dropUp when opening
+                const dropdown = dropdownRef.current;
+                const rect = dropdown.getBoundingClientRect();
+                const viewportHeight =
+                    window.innerHeight || document.documentElement.clientHeight;
+
+                const spaceBelow = viewportHeight - rect.bottom;
+                const spaceAbove = rect.top;
+
+                if (
+                    spaceBelow < dropdown.offsetHeight &&
+                    spaceAbove > dropdown.offsetHeight
+                ) {
+                    setDropUp(true);
+                } else {
+                    setDropUp(false);
+                }
+            }
+
+            return newState;
+        });
     };
 
     useEffect(() => {
@@ -18,10 +49,18 @@ const Dropdown = ({ children }) => {
             if (open && dropdownRef.current) {
                 const dropdown = dropdownRef.current;
                 const rect = dropdown.getBoundingClientRect();
-                const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+                const viewportHeight =
+                    window.innerHeight || document.documentElement.clientHeight;
 
-                // Check if there's enough space below, otherwise drop up
-                if (rect.bottom > viewportHeight && rect.top > dropdown.offsetHeight) {
+                // Check available space below and above the trigger
+                const spaceBelow = viewportHeight - rect.bottom;
+                const spaceAbove = rect.top;
+
+                // Set dropUp to true if there's more space above or not enough space below
+                if (
+                    spaceBelow < dropdown.offsetHeight &&
+                    spaceAbove > dropdown.offsetHeight
+                ) {
                     setDropUp(true);
                 } else {
                     setDropUp(false);
@@ -42,7 +81,9 @@ const Dropdown = ({ children }) => {
     }, [open]);
 
     return (
-        <DropDownContext.Provider value={{ open, setOpen, toggleOpen, dropUp, dropdownRef }}>
+        <DropDownContext.Provider
+            value={{ open, setOpen, toggleOpen, dropUp, dropdownRef }}
+        >
             <div className="relative">{children}</div>
         </DropDownContext.Provider>
     );
@@ -56,7 +97,12 @@ const Trigger = ({ children }) => {
             <div onClick={toggleOpen}>{children}</div>
 
             {/* Overlay to close dropdown */}
-            {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}></div>}
+            {open && (
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setOpen(false)}
+                ></div>
+            )}
         </>
     );
 };
@@ -96,10 +142,14 @@ const Content = ({
         >
             <div
                 ref={dropdownRef}
-                className={`absolute z-50 ${dropUp ? "bottom-full mb-2" : "mt-2"} ${alignmentClasses} ${widthClasses}`}
+                className={`absolute z-50 ${
+                    dropUp ? "bottom-full mb-2" : "top-full mt-2"
+                } ${alignmentClasses} ${widthClasses}`}
                 onClick={() => setOpen(false)}
             >
-                <div className={`rounded-md ring-1 ring-black ring-opacity-5 ${contentClasses}`}>
+                <div
+                    className={`rounded-md ring-1 ring-black ring-opacity-5 ${contentClasses}`}
+                >
                     {children}
                 </div>
             </div>
