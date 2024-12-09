@@ -520,11 +520,7 @@ export default function CreateLoanApplication({
                                             )
                                         )}
                                     </ul>
-                                    <PrimaryButton
-                                        onClick={() => window.print()}
-                                    >
-                                        Print Repayment Schedule
-                                    </PrimaryButton>
+                                    
                                 </div>
                             </div>
                         )}
