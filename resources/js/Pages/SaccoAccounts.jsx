@@ -24,6 +24,9 @@ export default function Dashboard({ auth, accounts, permissions }) {
                         <thead>
                             <tr className="text-gray-800 dark:text-gray-100">
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                    SNo
+                                </th>
+                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                     Owner
                                 </th>
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
@@ -47,11 +50,14 @@ export default function Dashboard({ auth, accounts, permissions }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {accounts.map((acc) => (
+                            {accounts.map((acc, index) => (
                                 <tr
                                     key={acc.id}
                                     className="text-gray-800 dark:text-gray-100"
                                 >
+                                    <td class="p-3 border-b dark:border-gray-700">
+                                        {index + 1}
+                                    </td>
                                     <td class="p-2 border-b dark:border-gray-700">
                                         <div class="flex items-center gap-3">
                                             <img

@@ -36,6 +36,9 @@ export default function FinancialYear({ auth, years, permissions }) {
                         <thead>
                             <tr className="text-gray-800 dark:text-gray-100">
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                    SNo
+                                </th>
+                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                     Name of Financial Year
                                 </th>
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
@@ -53,11 +56,14 @@ export default function FinancialYear({ auth, years, permissions }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {years.map((year) => (
+                            {years.map((year, index) => (
                                 <tr
                                     key={year.id}
                                     className="text-gray-800 dark:text-gray-100"
                                 >
+                                    <td class="p-3 border-b dark:border-gray-700">
+                                        {index + 1}
+                                    </td>
                                     <td class="p-2 border-b dark:border-gray-700">
                                         {year.name}
                                     </td>

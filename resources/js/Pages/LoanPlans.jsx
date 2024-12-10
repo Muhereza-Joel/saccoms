@@ -3,6 +3,7 @@ import { Head, Link } from "@inertiajs/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { usePermission } from "@/Hooks/usePermissions";
+import InfoRow from "@/Components/InfoRow";
 
 export default function LoanPlans({ auth, loanPlans, permissions }) {
     const { can } = usePermission(permissions);
@@ -108,24 +109,19 @@ export default function LoanPlans({ auth, loanPlans, permissions }) {
 
                                     {/* Loan Plan Details */}
                                     <div className="mt-4">
-                                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                                            <strong>Repayment Period:</strong>{" "}
-                                            {`${plan.loan_plan_months} Months` ||
-                                                "N/A"}
-                                        </p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                            <strong>Interest Rate:</strong>{" "}
-                                            {plan.loan_plan_interest_rate ||
-                                                "N/A"}
-                                            %
-                                        </p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                            <strong>
-                                                Missed Payment Penalty:
-                                            </strong>{" "}
-                                            {`Ugx ${plan.loan_plan_penalty}` ||
-                                                "N/A"}
-                                        </p>
+                                        <InfoRow
+                                            label="Repayment Period"
+                                            value={`${plan.loan_plan_months} Months`}
+                                        />
+                                        <InfoRow
+                                            label="Interest Rate"
+                                            value={`${plan.loan_plan_interest_rate}%`}
+                                        />
+                                        <InfoRow
+                                            label="Missed Payment Penalty"
+                                            value={`Ugx ${plan.loan_plan_penalty}`}
+                                        />
+                                        <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
                                     </div>
 
                                     {/* Expandable Section */}

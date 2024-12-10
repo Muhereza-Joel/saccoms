@@ -138,6 +138,9 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                         <thead>
                                             <tr>
                                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                                    SNo
+                                                </th>
+                                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     Member
                                                 </th>
                                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
@@ -155,8 +158,11 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {members.map((member) => (
+                                            {members.map((member, index) => (
                                                 <tr key={member.id}>
+                                                    <td class="p-3 border-b dark:border-gray-700">
+                                                        {index + 1}
+                                                    </td>
                                                     <td class="px-2 border-b dark:border-gray-700">
                                                         <div class="flex items-center gap-3">
                                                             <img
