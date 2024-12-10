@@ -53,4 +53,19 @@ class Loan extends Model
     {
         return $this->hasMany(RepaymentSchedule::class);
     }
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id', 'id');
+    }
+
+    public function loan_type()
+    {
+        return $this->belongsTo(LoanType::class, 'loan_type', 'id');
+    }
+
+    public function loan_plan()
+    {
+        return $this->belongsTo(LoanPlan::class, 'loan_plan', 'id');
+    }
 }

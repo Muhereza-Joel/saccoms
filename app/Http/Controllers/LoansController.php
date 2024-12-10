@@ -30,8 +30,10 @@ class LoansController extends Controller
      */
     public function index()
     {
+        $loans = Loan::with('member')->get();
         return Inertia::render('Loans', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'loans' => $loans
         ]);
     }
 
@@ -106,7 +108,14 @@ class LoansController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $loan = Loan::with(['member', 'loan_type', 'loan_plan'])->findOrFail($id);
+
+        return Inertia::render('LoanDetails', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'loan' => $loan,
+            'success' => session('success'),
+            'error' =>session('error'),
+        ]);
     }
 
     /**
