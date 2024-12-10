@@ -6,8 +6,11 @@ use App\Models\Loan;
 use App\Models\LoanPlan;
 use App\Models\LoanType;
 use App\Models\Member;
+use App\Models\RepaymentSchedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LoansController extends Controller
@@ -22,6 +25,7 @@ class LoansController extends Controller
         $this->middleware('permission:View Loan Details')->only('show');
         $this->middleware('permission:Update Loan')->only('edit');
         $this->middleware('permission:Update Loan')->only('update');
+        $this->middleware('permission:Update Loan')->only('updateLoanStatus');
         $this->middleware('permission:Delete Loan')->only('destroy');
     }
 
@@ -33,7 +37,9 @@ class LoansController extends Controller
         $loans = Loan::with('member')->get();
         return Inertia::render('Loans', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
-            'loans' => $loans
+            'loans' => $loans,
+            'success' => session('success'),
+            'error' => session('error'),
         ]);
     }
 
@@ -108,13 +114,13 @@ class LoansController extends Controller
      */
     public function show(string $id)
     {
-        $loan = Loan::with(['member', 'loan_type', 'loan_plan'])->findOrFail($id);
+        $loan = Loan::with(['member', 'loan_type', 'loan_plan', 'repayment_schedules'])->findOrFail($id);
 
         return Inertia::render('LoanDetails', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             'loan' => $loan,
             'success' => session('success'),
-            'error' =>session('error'),
+            'error' => session('error'),
         ]);
     }
 
@@ -133,6 +139,62 @@ class LoansController extends Controller
     {
         //
     }
+
+    public function updateLoanStatus(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|max:15|in:Approved,Rejected,Disbursed',
+        ]);
+
+        DB::transaction(function () use ($validated, $id) {
+            $loan = Loan::findOrFail($id);
+
+            // Update the status
+            $loan->status = $validated['status'];
+
+            if ($validated['status'] === 'Approved') {
+                $loan->approval_date = now(); // Set approval date
+            } elseif ($validated['status'] === 'Disbursed') {
+                $loan->disbursement_date = now(); // Set disbursement date
+
+                // Generate repayment schedules
+                $this->generateRepaymentSchedules($loan);
+            }
+
+            // Save the loan with updated status
+            $loan->save();
+        });
+
+        return redirect()->back()->with("success", "Loan Status Updated Successfully");
+    }
+
+
+    private function generateRepaymentSchedules($loan)
+    {
+        $repaymentPeriod = $loan->repayment_period; // Period in months
+        $outstandingBalance = $loan->outstanding_balance;
+
+        if ($repaymentPeriod <= 0) {
+            throw new \Exception("Invalid repayment period: $repaymentPeriod");
+        }
+
+        $amountDue = $outstandingBalance / $repaymentPeriod; // Monthly installment
+        $dueDate = Carbon::now(); // Start with today's date
+
+        // Create repayment schedules for each month
+        for ($i = 1; $i <= $repaymentPeriod; $i++) {
+            RepaymentSchedule::create([
+                'loan_id' => $loan->id,
+                'due_date' => $dueDate->addMonth(), // Increment by one month
+                'amount_due' => round($amountDue, 2), // Round to 2 decimal places
+            ]);
+        }
+
+        // Set the final due date of the loan as the last repayment schedule's due date
+        $loan->due_date = $dueDate;
+        $loan->save();
+    }
+
 
     /**
      * Remove the specified resource from storage.

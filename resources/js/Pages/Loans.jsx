@@ -1,12 +1,71 @@
 import AlertError from "@/Components/AlertError";
 import AlertSuccess from "@/Components/AlertSuccess";
+import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import SelectInput from "@/Components/SelectInput";
 import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Loans({ auth, permissions, loans, success, error }) {
     const { can } = usePermission(permissions);
+    const [updateLoanStatus, setUpdateLoanStatus] = useState(false);
+    const [id, setID] = useState(null);
+    const { data, setData, patch, errors, processing, reset } = useForm({
+        status: "",
+    });
+
+    const closeModal = () => {
+        setUpdateLoanStatus(false);
+        reset();
+        setID(null);
+    };
+
+    const submitLoanStatus = (e) => {
+        e.preventDefault();
+
+        patch(route("update-loan-status", id), {
+            onSuccess: () => {
+                closeModal();
+            },
+            onError: () => {
+                // Keep the ID intact; no reset here
+            },
+            onFinish: () => {
+                setData("status", "");
+            },
+        });
+    };
+
+    const getStatusOptions = (currentStatus, canApprove, canDisburse) => {
+        switch (currentStatus) {
+            case "Pending":
+                const options = [];
+                if (canApprove) {
+                    options.push({ value: "Approved", label: "Approved" });
+                }
+                if (canApprove) {
+                    options.push({ value: "Rejected", label: "Rejected" });
+                }
+                return options;
+
+            case "Approved":
+                return canDisburse
+                    ? [{ value: "Disbursed", label: "Disbursed" }]
+                    : [];
+
+            case "Disbursed":
+            case "Rejected":
+            default:
+                return [];
+        }
+    };
 
     return (
         <AuthenticatedLayout
@@ -29,8 +88,8 @@ export default function Loans({ auth, permissions, loans, success, error }) {
 
                 {/* Display Error Message */}
                 {error && <AlertError error={error} />}
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg m-2 p-6 px-0">
-                    <table className="w-full mt-2 text-left table-auto min-w-max">
+                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg m-2 p-6 px-0 h-full">
+                    <table className="w-full mt-2 text-left table-auto min-w-max overflow-y-visible">
                         <thead>
                             <tr className="text-gray-800 dark:text-gray-100">
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
@@ -78,9 +137,25 @@ export default function Loans({ auth, permissions, loans, success, error }) {
                                     <td class="p-2 border-b dark:border-gray-700">
                                         {loan.reference_number}
                                     </td>
-                                    <td class="p-2 border-b dark:border-gray-700">
-                                        {loan.status}
+                                    <td className="p-2 border-b dark:border-gray-700">
+                                        <span
+                                            className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                loan.status === "Pending"
+                                                    ? "bg-yellow-100 text-yellow-800"
+                                                    : loan.status === "Rejected"
+                                                    ? "bg-red-100 text-red-800"
+                                                    : loan.status === "Approved"
+                                                    ? "bg-green-100 text-green-800"
+                                                    : loan.status ===
+                                                      "Disbursed"
+                                                    ? "bg-blue-100 text-blue-800"
+                                                    : "bg-gray-100 text-gray-800"
+                                            }`}
+                                        >
+                                            {loan.status}
+                                        </span>
                                     </td>
+
                                     <td className="p-2 border-b dark:border-gray-700">
                                         {loan.principal_amount}
                                     </td>
@@ -120,6 +195,20 @@ export default function Loans({ auth, permissions, loans, success, error }) {
                                                         View Loan Details
                                                     </Dropdown.Link>
                                                 )}
+
+                                                {can("Update Loan") && (
+                                                    <Dropdown.Link
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setUpdateLoanStatus(
+                                                                true
+                                                            );
+                                                            setID(loan.id);
+                                                        }}
+                                                    >
+                                                        Update Loan Status
+                                                    </Dropdown.Link>
+                                                )}
                                             </Dropdown.Content>
                                         </Dropdown>
                                     </td>
@@ -128,6 +217,78 @@ export default function Loans({ auth, permissions, loans, success, error }) {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Approve Loan Modal */}
+                <Modal show={updateLoanStatus} onClose={closeModal}>
+                    <div className="p-4">
+                        <header>
+                            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                Update Loan Application Status
+                            </h2>
+
+                            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                The loan status can only progress forward in the
+                                application process. Once rejected, a loan
+                                cannot be updated further. Please select a valid
+                                next status based on the current stage.
+                            </p>
+                        </header>
+                        <form onSubmit={submitLoanStatus}>
+                            <div className="space-y-6 mt-5">
+                                <div>
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Loan Status"
+                                    />
+
+                                    <SelectInput
+                                        id="status"
+                                        name="status"
+                                        isFocused={false}
+                                        className="mt-1 block w-full"
+                                        options={[
+                                            {
+                                                value: "",
+                                                label: "Select Status",
+                                            },
+                                            ...getStatusOptions(
+                                                loans.find((l) => l.id === id)
+                                                    ?.status,
+                                                can("Approve Loan"),
+                                                can("Disburse Loan")
+                                            ),
+                                        ]}
+                                        onChange={(e) =>
+                                            setData("status", e.target.value)
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.status}
+                                        className="mt-2"
+                                    />
+
+                                    {/* Submit and Cancel Buttons */}
+                                    <div className="flex items-center justify-start mt-3">
+                                        <PrimaryButton
+                                            className="ms-0 mb-3"
+                                            disabled={processing}
+                                        >
+                                            Save
+                                        </PrimaryButton>
+
+                                        <DangerButton
+                                            className="ms-2 mb-3"
+                                            onClick={() => closeModal()}
+                                        >
+                                            Cancel
+                                        </DangerButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </Modal>
             </div>
         </AuthenticatedLayout>
     );

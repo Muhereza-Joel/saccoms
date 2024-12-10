@@ -16,6 +16,7 @@ class Loan extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
+        'financial_year',
         'member_id',
         'loan_type',
         'loan_plan',
@@ -67,5 +68,10 @@ class Loan extends Model
     public function loan_plan()
     {
         return $this->belongsTo(LoanPlan::class, 'loan_plan', 'id');
+    }
+
+    public function repayment_schedules()
+    {
+        return $this->hasMany(RepaymentSchedule::class, 'loan_id', 'id');
     }
 }

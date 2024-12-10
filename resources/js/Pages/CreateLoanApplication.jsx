@@ -497,8 +497,18 @@ export default function CreateLoanApplication({
 
                                 <div className="md:w-1/3 h-screen overflow-y-auto bg-gray-50 dark:bg-gray-800 p-6 rounded-lg space-y-6">
                                     <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 border-b pb-2 border-gray-300 dark:border-gray-600">
-                                        Loan Repayment Schedule.
+                                        Sample Loan Repayment Schedule.
                                     </h2>
+                                    <div
+                                        className="bg-orange-100 dark:bg-orange-900 border border-orange-400 dark:border-orange-700 text-orange-700 dark:text-orange-300 px-2 py-1 rounded relative"
+                                        role="alert"
+                                    >
+                                        <span className="block sm:inline">
+                                            <strong>
+                                                Note: This is note the actual repayment schedule, the actual schedule will be generated when the loan is disbursed.
+                                            </strong>
+                                        </span>
+                                    </div>
                                     <ul className="space-y-3">
                                         {repaymentScheduleDetails.map(
                                             (detail, index) => (
@@ -520,7 +530,6 @@ export default function CreateLoanApplication({
                                             )
                                         )}
                                     </ul>
-                                    
                                 </div>
                             </div>
                         )}

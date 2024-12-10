@@ -1,5 +1,6 @@
 import InfoRow from "@/Components/InfoRow";
 import LongTextInfoRow from "@/Components/LongTextInfoRow";
+import RepaymentSchedule from "@/Components/RepaymetSchedule";
 import Section from "@/Components/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
@@ -130,7 +131,7 @@ export default function LoanDetails({ auth, permissions, loan }) {
                                         label="Reference Number"
                                         value={loan.reference_number}
                                     />
-                                    
+
                                     <InfoRow
                                         label="Principal Amount"
                                         value={loan.principal_amount}
@@ -149,7 +150,7 @@ export default function LoanDetails({ auth, permissions, loan }) {
                                         label="Disbursement Date"
                                         value={loan.disbursement_date}
                                     />
-                                    
+
                                     <InfoRow
                                         label="Repayment Schedule"
                                         value={loan.repayment_schedule}
@@ -157,10 +158,39 @@ export default function LoanDetails({ auth, permissions, loan }) {
 
                                     <InfoRow
                                         label="Loan Status"
-                                        value={loan.status}
+                                        value={
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                    loan.status === "Pending"
+                                                        ? "bg-yellow-100 text-yellow-800"
+                                                        : loan.status ===
+                                                          "Rejected"
+                                                        ? "bg-red-100 text-red-800"
+                                                        : loan.status ===
+                                                          "Approved"
+                                                        ? "bg-green-100 text-green-800"
+                                                        : loan.status ===
+                                                          "Disbursed"
+                                                        ? "bg-blue-100 text-blue-800"
+                                                        : "bg-gray-100 text-gray-800"
+                                                }`}
+                                            >
+                                                {loan.status}
+                                            </span>
+                                        }
                                     />
-
+                                    <br />
+                                    <LongTextInfoRow
+                                        label="Collateral"
+                                        value={loan.collateral}
+                                    />
                                 </Section>
+                            </div>
+
+                            <div className="p-6">
+                                {loan.status === "Disbursed" && (
+                                    <RepaymentSchedule loan={loan} />
+                                )}
                             </div>
                         </div>
                     </div>

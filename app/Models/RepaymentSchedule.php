@@ -19,6 +19,7 @@ class RepaymentSchedule extends Model
         'loan_id',
         'due_date',
         'amount_due',
+        'status'
     ];
 
     protected static function boot()

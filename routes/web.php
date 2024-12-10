@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/loan-plans', LoanPlanController::class);
     Route::resource('/loans', LoansController::class);
     Route::get('/member/{id}/loan-application/create', [LoansController::class, 'createMemberLoanApplication'])->name('create-member-loan-application');
+    Route::patch('/loans/{id}/status/update', [LoansController::class, 'updateLoanStatus'])->name('update-loan-status');
     Route::resource('/transactions', TransactionsController::class);
     Route::resource('/tickets', TicketsController::class);
     Route::get('/assign/permissions', [RoleController::class, 'assignPermissions'])->name('assign-permissions');
