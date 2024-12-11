@@ -131,7 +131,12 @@ export default function SaccoAccounts({ auth, accounts, permissions, links }) {
                                                     {can(
                                                         "Create Transaction"
                                                     ) && (
-                                                        <Dropdown.Link href="#">
+                                                        <Dropdown.Link
+                                                            href={route(
+                                                                "create-member-transaction",
+                                                                acc.id
+                                                            )}
+                                                        >
                                                             Create Transaction
                                                         </Dropdown.Link>
                                                     )}
@@ -143,7 +148,7 @@ export default function SaccoAccounts({ auth, accounts, permissions, links }) {
                             ))}
                         </tbody>
                     </table>
-                    <Pagination links={links}/>
+                    <Pagination links={links} />
                 </div>
             </div>
         </AuthenticatedLayout>

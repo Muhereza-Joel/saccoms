@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/member/{id}/loan-application/create', [LoansController::class, 'createMemberLoanApplication'])->name('create-member-loan-application');
     Route::patch('/loans/{id}/status/update', [LoansController::class, 'updateLoanStatus'])->name('update-loan-status');
     Route::resource('/transactions', TransactionsController::class);
+    Route::get('/member/accounts/{account_id}/transactions/create', [TransactionsController::class, 'createMemberTransaction'])->name('create-member-transaction');
     Route::resource('/tickets', TicketsController::class);
     Route::get('/assign/permissions', [RoleController::class, 'assignPermissions'])->name('assign-permissions');
     Route::post('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.save-assigned-permissions');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -10,12 +12,10 @@ class TransactionsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:Create Transaction')->only('create');
-        $this->middleware('permission:Create Transaction')->only('store');
+        $this->middleware('permission:Create Transaction')->only(['create', 'store', 'createMemberTransaction']);
         $this->middleware('permission:View Transactions')->only('index');
         $this->middleware('permission:View Transaction Details')->only('show');
-        $this->middleware('permission:Update Transaction')->only('edit');
-        $this->middleware('permission:Update Transaction')->only('update');
+        $this->middleware('permission:Update Transaction')->only(['edit', 'update']);
         $this->middleware('permission:Delete Transaction')->only('destroy');
     }
 
@@ -35,6 +35,19 @@ class TransactionsController extends Controller
     public function create()
     {
         //
+    }
+
+    public function createMemberTransaction($id)
+    {
+        $account = Account::where('id', $id)->first();
+        $member_id = $account->member_id;
+
+        $member = Member::findOrFail($member_id);
+
+        return Inertia::render('CreateTransaction', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'member' => $member,
+        ]);
     }
 
     /**
