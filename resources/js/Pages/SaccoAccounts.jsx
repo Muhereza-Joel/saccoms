@@ -1,9 +1,10 @@
 import Dropdown from "@/Components/Dropdown";
+import Pagination from "@/Components/Pagination";
 import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Dashboard({ auth, accounts, permissions }) {
+export default function SaccoAccounts({ auth, accounts, permissions, links }) {
     const { can } = usePermission(permissions);
 
     return (
@@ -142,6 +143,7 @@ export default function Dashboard({ auth, accounts, permissions }) {
                             ))}
                         </tbody>
                     </table>
+                    <Pagination links={links}/>
                 </div>
             </div>
         </AuthenticatedLayout>

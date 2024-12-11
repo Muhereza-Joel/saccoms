@@ -1,8 +1,9 @@
+import Pagination from "@/Components/Pagination";
 import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
-export default function FinancialYear({ auth, years, permissions }) {
+export default function FinancialYear({ auth, years, permissions, links }) {
     const { can } = usePermission(permissions);
 
     return (
@@ -93,6 +94,8 @@ export default function FinancialYear({ auth, years, permissions }) {
                             ))}
                         </tbody>
                     </table>
+
+                    <Pagination links={links}/>
                 </div>
             </div>
         </AuthenticatedLayout>

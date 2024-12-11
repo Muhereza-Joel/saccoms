@@ -8,19 +8,19 @@ import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function CreateLoanPlan({ auth, success, error, permissions }) {
+export default function EditLoanPlan({ auth, success, error, permissions, loan_plan }) {
     const { can } = usePermission(permissions);
-    const { data, setData, post, processing, errors, reset } = useForm({
-        loan_plan_name: "",
-        loan_plan_months: "",
-        loan_plan_interest_rate: "",
-        loan_plan_penalty: "",
-        loan_plan_limit: "",
+    const { data, setData, put, processing, errors, reset } = useForm({
+        loan_plan_name: loan_plan.loan_plan_name,
+        loan_plan_months: loan_plan.loan_plan_months,
+        loan_plan_interest_rate: loan_plan.loan_plan_interest_rate,
+        loan_plan_penalty: loan_plan.loan_plan_penalty,
+        loan_plan_limit: loan_plan.loan_plan_limit,
     });
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("loan-plans.store"), {
+        put(route("loan-plans.update", loan_plan.id), {
             onSuccess: () => reset(), // Reset the form on success
         });
     };
@@ -31,7 +31,7 @@ export default function CreateLoanPlan({ auth, success, error, permissions }) {
             permissions={permissions}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Create New Loan Plan
+                    Update Loan Plan Details
                 </h2>
             }
         >
@@ -213,7 +213,7 @@ export default function CreateLoanPlan({ auth, success, error, permissions }) {
                                             className="ms-0 mb-3"
                                             disabled={processing}
                                         >
-                                            Save Plan
+                                            Update Plan
                                         </PrimaryButton>
                                     </div>
                                 </div>

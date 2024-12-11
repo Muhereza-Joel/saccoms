@@ -1,9 +1,10 @@
 import Dropdown from "@/Components/Dropdown";
+import Pagination from "@/Components/Pagination";
 import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
-export default function SaccoMembers({ auth, members, permissions }) {
+export default function SaccoMembers({ auth, members, links, permissions }) {
     const { can } = usePermission(permissions);
 
     return (
@@ -35,7 +36,7 @@ export default function SaccoMembers({ auth, members, permissions }) {
                 <div className="max-w-7xl mx-auto sm:px-2 lg:px-2">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-2 text-gray-900 dark:text-gray-100">
-                            <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl dark:bg-gray-800 dark:text-gray-200 bg-clip-border">
+                            <div class="relative flex flex-col w-full h-full text-gray-700 bg-white rounded-xl dark:bg-gray-800 dark:text-gray-200 bg-clip-border">
                                 <div class="relative mx-4 mt-2 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border dark:bg-gray-900">
                                     <div class="flex flex-wrap p-2 items-center justify-between gap-8">
                                         {/* <!-- Buttons --> */}
@@ -136,7 +137,7 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                 <div class="p-6 px-0">
                                     <table class="w-full mt-2 text-left table-auto min-w-max">
                                         <thead>
-                                            <tr>
+                                            <tr className="">
                                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                                     SNo
                                                 </th>
@@ -254,7 +255,8 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                                                         )}
                                                                     >
                                                                         Create
-                                                                        Loan Application
+                                                                        Loan
+                                                                        Application
                                                                     </Dropdown.Link>
                                                                 )}
 
@@ -266,7 +268,8 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                                                             "transactions.create"
                                                                         )}
                                                                     >
-                                                                        Create Transaction
+                                                                        Create
+                                                                        Transaction
                                                                     </Dropdown.Link>
                                                                 )}
 
@@ -317,6 +320,7 @@ export default function SaccoMembers({ auth, members, permissions }) {
                                     </table>
                                 </div>
                             </div>
+                        <Pagination links={links} />
                         </div>
                     </div>
                 </div>

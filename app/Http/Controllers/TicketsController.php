@@ -12,12 +12,10 @@ class TicketsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:Create Support Ticket')->only('create');
-        $this->middleware('permission:Create Support Ticket')->only('store');
+        $this->middleware('permission:Create Support Ticket')->only(['create','store']);
         $this->middleware('permission:View Support Tickets')->only('index');
         $this->middleware('permission:View Support Ticket Details')->only('show');
-        $this->middleware('permission:Update Support Ticket')->only('edit');
-        $this->middleware('permission:Update Support Ticket')->only('update');
+        $this->middleware('permission:Update Support Ticket')->only(['edit','update']);
         $this->middleware('permission:Delete Support Ticket')->only('destroy');
     }
 
@@ -28,32 +26,37 @@ class TicketsController extends Controller
     {
         $member_id = Auth::user()->id;
 
-        // Tickets created by the user
-        $createdTickets = SupportTicket::where('member_id', $member_id)->get();
+        // Tickets created by the user, with pagination
+        $createdTickets = SupportTicket::where('member_id', $member_id)
+            ->paginate(10); // Adjust the number of tickets per page as needed
 
-        // Tickets assigned to the user
-        $assignedTickets = SupportTicket::where('assigned_to', $member_id)->get();
+        // Tickets assigned to the user, with pagination
+        $assignedTickets = SupportTicket::where('assigned_to', $member_id)
+            ->paginate(10); // Adjust the number of tickets per page as needed
 
         // Get the user associated with the first created ticket (if any)
         $createdTicketUser = $createdTickets->isNotEmpty()
-            ? User::find($createdTickets[0]->assigned_to)
+            ? User::find($createdTickets->first()->assigned_to)
             : null;
 
         // Get the user associated with the first assigned ticket (if any)
         $assignedTicketUser = $assignedTickets->isNotEmpty()
-            ? User::find($assignedTickets[0]->member_id)
+            ? User::find($assignedTickets->first()->member_id)
             : null;
 
         return Inertia::render('Tickets', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
-            'createdTickets' => $createdTickets,
-            'assignedTickets' => $assignedTickets,
-            'createdTicketUser' => $createdTicketUser, // User for first created ticket
-            'assignedTicketUser' => $assignedTicketUser, // User for first assigned ticket
+            'createdTickets' => $createdTickets->items(),
+            'assignedTickets' => $assignedTickets->items(),
+            'createdTicketUser' => $createdTicketUser,
+            'assignedTicketUser' => $assignedTicketUser,
+            'createdTicketsLinks' => $createdTickets->linkCollection(), // Pagination links for createdTickets
+            'assignedTicketsLinks' => $assignedTickets->linkCollection(), // Pagination links for assignedTickets
             'success' => session('success'),
             'error' => session('error'),
         ]);
     }
+
 
 
 

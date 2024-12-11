@@ -8,6 +8,7 @@ import { usePermission } from "@/Hooks/usePermissions";
 import Modal from "@/Components/Modal";
 import SelectInput from "@/Components/SelectInput";
 import PrimaryButton from "@/Components/PrimaryButton";
+import Pagination from "@/Components/Pagination";
 
 export default function Tickets({
     auth,
@@ -15,7 +16,9 @@ export default function Tickets({
     createdTickets,
     assignedTickets,
     createdTicketUser,
+    createdTicketsLinks,
     assignedTicketUser,
+    assignedTicketsLinks,
     success,
     error,
 }) {
@@ -29,7 +32,7 @@ export default function Tickets({
 
     const openModal = (ticket) => {
         setSelectedTicket(ticket);
-        setData("status", "In Progress")
+        setData("status", "In Progress");
         setShowModal(true);
     };
 
@@ -105,24 +108,32 @@ export default function Tickets({
                 {/* Ticket List */}
                 <div className="mt-4">
                     {activeTab === "created" && (
-                        <TicketList
-                            tickets={createdTickets}
-                            permissions={permissions}
-                            allowEdit={false}
-                            createdTicketUser={createdTicketUser}
-                            assignedTicketUser={assignedTicketUser}
-                            openModal={openModal}
-                        />
+                        <>
+                            <TicketList
+                                tickets={createdTickets}
+                                permissions={permissions}
+                                allowEdit={false}
+                                createdTicketUser={createdTicketUser}
+                                assignedTicketUser={assignedTicketUser}
+                                openModal={openModal}
+                            />
+
+                            <Pagination links={createdTicketsLinks} />
+                        </>
                     )}
                     {activeTab === "assigned" && (
-                        <TicketList
-                            tickets={assignedTickets}
-                            permissions={permissions}
-                            allowEdit={true}
-                            assignedTicketUser={assignedTicketUser}
-                            createdTicketUser={createdTicketUser}
-                            openModal={openModal}
-                        />
+                        <>
+                            <TicketList
+                                tickets={assignedTickets}
+                                permissions={permissions}
+                                allowEdit={true}
+                                assignedTicketUser={assignedTicketUser}
+                                createdTicketUser={createdTicketUser}
+                                openModal={openModal}
+                            />
+
+                            <Pagination links={assignedTicketsLinks} />
+                        </>
                     )}
                 </div>
 

@@ -12,13 +12,10 @@ class AccountsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:Create Account')->only('create');
-        $this->middleware('permission:Create Account')->only('createMemberAccount');
-        $this->middleware('permission:Create Account')->only('store');
+        $this->middleware('permission:Create Account')->only(['create', 'store', 'createMemberAccount']);
         $this->middleware('permission:View Accounts')->only('index');
         $this->middleware('permission:View Account Details')->only('show');
-        $this->middleware('permission:Update Account Details')->only('edit');
-        $this->middleware('permission:Update Account Details')->only('update');
+        $this->middleware('permission:Update Account Details')->only(['edit', 'update']);
         $this->middleware('permission:Delete Account')->only('destroy');
     }
 
@@ -27,8 +24,11 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        $accounts = Account::with('member')->get()->map(function ($account) {
-            // Check if the member has a photo and generate the URL
+        // Paginate the accounts and load related member data
+        $accounts = Account::with('member')
+            ->paginate(10); 
+
+        $accountsCollection = $accounts->getCollection()->map(function ($account) {
             if ($account->member && $account->member->member_photo) {
                 $account->member->member_photo_url = asset($account->member->member_photo);
             }
@@ -37,10 +37,12 @@ class AccountsController extends Controller
         });
 
         return Inertia::render('SaccoAccounts', [
-            'accounts' => $accounts,
+            'accounts' => $accountsCollection,
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'links' => $accounts->linkCollection(),
         ]);
     }
+
 
 
     /**

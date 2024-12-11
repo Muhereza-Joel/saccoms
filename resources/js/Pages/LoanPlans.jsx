@@ -117,9 +117,15 @@ export default function LoanPlans({ auth, loanPlans, permissions }) {
                                             label="Interest Rate"
                                             value={`${plan.loan_plan_interest_rate}%`}
                                         />
+
                                         <InfoRow
                                             label="Missed Payment Penalty"
                                             value={`Ugx ${plan.loan_plan_penalty}`}
+                                        />
+
+                                        <InfoRow
+                                            label="Single Borrow Limit"
+                                            value={`Ugx ${plan.loan_plan_limit}`}
                                         />
                                         <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
                                     </div>

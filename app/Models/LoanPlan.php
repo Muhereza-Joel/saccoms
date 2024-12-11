@@ -20,6 +20,7 @@ class LoanPlan extends Model
         'loan_plan_months',
         'loan_plan_interest_rate',
         'loan_plan_penalty',
+        'loan_plan_limit',
     ];
 
     protected static function boot()

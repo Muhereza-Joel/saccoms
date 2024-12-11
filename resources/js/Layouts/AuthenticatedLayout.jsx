@@ -155,7 +155,7 @@ export default function Authenticated({
                         </li>
                     )}
 
-                    {can("Create Loan") && (
+                    {can("View Loans") && (
                         <>
                             <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
                             <small className="text-gray-200 dark:text-gray-300">
@@ -189,7 +189,7 @@ export default function Authenticated({
                         </li>
                     )}
 
-                    {can("Create Loan") && (
+                    {can("View Loans") && (
                         <li>
                             <NavLink
                                 href={route("loans.index")}

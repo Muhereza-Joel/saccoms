@@ -12,21 +12,21 @@ class MembersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:Create Member')->only('create');
-        $this->middleware('permission:Create Member')->only('store');
         $this->middleware('permission:View Members')->only('index');
+        $this->middleware('permission:Create Member')->only(['create', 'store']);
         $this->middleware('permission:View Member Details')->only('show');
-        $this->middleware('permission:Update Member')->only('edit');
-        $this->middleware('permission:Update Member')->only('store');
-        $this->middleware('permission:Delete Member')->only('delete');
+        $this->middleware('permission:Update Member')->only(['edit', 'update']);
+        $this->middleware('permission:Delete Member')->only('destroy');
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $members = Member::all()->map(function ($member) {
-            // Assuming 'member_photo' is the field in your Member model storing the image filename
+        $paginatedMembers = Member::paginate(10);
+
+        $members = collect($paginatedMembers->items())->map(function ($member) {
             if ($member->member_photo) {
                 $member->member_photo_url = asset($member->member_photo);
             }
@@ -35,10 +35,14 @@ class MembersController extends Controller
         });
 
         return Inertia::render('SaccoMembers', [
-            'members' => $members,
+            'members' => $members, 
+            'links' => $paginatedMembers->linkCollection(), // Pagination links
+            'meta' => $paginatedMembers->toArray(), // Metadata like current page, total, etc.
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

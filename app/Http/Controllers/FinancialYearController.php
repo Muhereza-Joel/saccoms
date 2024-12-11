@@ -13,12 +13,10 @@ class FinancialYearController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:Create Financial Year')->only('create');
-        $this->middleware('permission:Create Financial Year')->only('store');
+        $this->middleware('permission:Create Financial Year')->only(['create','store']);
         $this->middleware('permission:View Financial Years')->only('index');
         $this->middleware('permission:View Financial Year Details')->only('show');
-        $this->middleware('permission:Update Financial Year Details')->only('edit');
-        $this->middleware('permission:Update Financial Year Details')->only('update');
+        $this->middleware('permission:Update Financial Year Details')->only(['edit','update']);
         $this->middleware('permission:Delete Financial Year')->only('destroy');
     }
 
@@ -27,13 +25,18 @@ class FinancialYearController extends Controller
      */
     public function index()
     {
-        $years = FinancialYear::all();
+        $years = FinancialYear::paginate(10);
+
+        // Convert the paginated data to a collection
+        $yearsCollection = $years->getCollection();
 
         return Inertia::render('FinancialYear', [
-            'years' => $years,
+            'years' => $yearsCollection, // Pass the collection of years
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'links' => $years->linkCollection(), // Pagination links
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -5,6 +5,7 @@ import Dropdown from "@/Components/Dropdown";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
+import Pagination from "@/Components/Pagination";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
@@ -13,7 +14,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Loans({ auth, permissions, loans, success, error }) {
+export default function Loans({ auth, permissions, loans, links, success, error }) {
     const { can } = usePermission(permissions);
     const [updateLoanStatus, setUpdateLoanStatus] = useState(false);
     const [id, setID] = useState(null);
@@ -111,9 +112,11 @@ export default function Loans({ auth, permissions, loans, success, error }) {
                                     Principal Amount
                                 </th>
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
-                                    Balance
+                                    Interest
                                 </th>
-
+                                <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
+                                    Balance Due
+                                </th>
                                 <th class="p-2 border-y border-blue-gray-100 bg-blue-gray-50/50 dark:bg-gray-800">
                                     Actions
                                 </th>
@@ -157,10 +160,13 @@ export default function Loans({ auth, permissions, loans, success, error }) {
                                     </td>
 
                                     <td className="p-2 border-b dark:border-gray-700">
-                                        {loan.principal_amount}
+                                        {`Ugx ${loan.principal_amount}`}
                                     </td>
                                     <td class="p-2 border-b dark:border-gray-700">
-                                        {loan.outstanding_balance}
+                                        {`${loan.interest_rate}%`}
+                                    </td>
+                                    <td class="p-2 border-b dark:border-gray-700">
+                                        {`Ugx ${loan.outstanding_balance}`}
                                     </td>
                                     <td class="p-2 border-b dark:border-gray-700">
                                         <Dropdown>
@@ -217,6 +223,8 @@ export default function Loans({ auth, permissions, loans, success, error }) {
                         </tbody>
                     </table>
                 </div>
+
+                <Pagination links={links}/>
 
                 {/* Approve Loan Modal */}
                 <Modal show={updateLoanStatus} onClose={closeModal}>

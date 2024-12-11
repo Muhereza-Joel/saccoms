@@ -35,6 +35,7 @@ export default function CreateLoanApplication({
         loan_type: "",
         loan_plan: "",
         loan_plan_months: "",
+        loan_plan_limit: "",
         loan_plan_interest_rate: "",
         principal_amount: "",
         repayment_period: "",
@@ -337,6 +338,9 @@ export default function CreateLoanApplication({
                                                                     loan_plan_interest_rate:
                                                                         selectedPlan?.loan_plan_interest_rate ||
                                                                         "",
+                                                                    loan_plan_limit:
+                                                                        selectedPlan?.loan_plan_limit ||
+                                                                        "",
                                                                 })
                                                             );
                                                         }}
@@ -369,6 +373,18 @@ export default function CreateLoanApplication({
                                                         type="number"
                                                         value={
                                                             data.loan_plan_months
+                                                        }
+                                                        className="mt-1 block w-full"
+                                                    />
+
+                                                    <InputLabel
+                                                        htmlFor="loan_plan_limit"
+                                                        value="Maximumn amount a member can borrow"
+                                                    />
+                                                    <TextInput
+                                                        type="number"
+                                                        value={
+                                                            data.loan_plan_limit
                                                         }
                                                         className="mt-1 block w-full"
                                                     />
@@ -496,19 +512,28 @@ export default function CreateLoanApplication({
                                 </form>
 
                                 <div className="md:w-1/3 h-screen overflow-y-auto bg-gray-50 dark:bg-gray-800 p-6 rounded-lg space-y-6">
-                                    <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 border-b pb-2 border-gray-300 dark:border-gray-600">
-                                        Sample Loan Repayment Schedule.
-                                    </h2>
-                                    <div
-                                        className="bg-orange-100 dark:bg-orange-900 border border-orange-400 dark:border-orange-700 text-orange-700 dark:text-orange-300 px-2 py-1 rounded relative"
-                                        role="alert"
-                                    >
-                                        <span className="block sm:inline">
-                                            <strong>
-                                                Note: This is note the actual repayment schedule, the actual schedule will be generated when the loan is disbursed.
-                                            </strong>
-                                        </span>
-                                    </div>
+                                    {repaymentScheduleDetails.length > 0 && (
+                                        <>
+                                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 border-b pb-2 border-gray-300 dark:border-gray-600">
+                                                Sample Loan Repayment Schedule.
+                                            </h2>
+                                            <div
+                                                className="bg-orange-100 dark:bg-orange-900 border border-orange-400 dark:border-orange-700 text-orange-700 dark:text-orange-300 px-2 py-1 rounded relative"
+                                                role="alert"
+                                            >
+                                                <span className="block sm:inline">
+                                                    <strong>
+                                                        Note: This is note the
+                                                        actual repayment
+                                                        schedule, the actual
+                                                        schedule will be
+                                                        generated when the loan
+                                                        is disbursed.
+                                                    </strong>
+                                                </span>
+                                            </div>
+                                        </>
+                                    )}
                                     <ul className="space-y-3">
                                         {repaymentScheduleDetails.map(
                                             (detail, index) => (
