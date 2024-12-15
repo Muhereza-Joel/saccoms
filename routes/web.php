@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\DashboardContoller;
 use App\Http\Controllers\FinancialYearController;
 use App\Http\Controllers\LoanPlanController;
 use App\Http\Controllers\LoansController;
@@ -33,9 +34,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard', ['permissions' => Auth::user()->getAllPermissions()->pluck('name')]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardContoller::class, 'renderDashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/tickets', TicketsController::class);
     Route::get('/assign/permissions', [RoleController::class, 'assignPermissions'])->name('assign-permissions');
     Route::post('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.save-assigned-permissions');
-    
+
     Route::resource('/roles', RoleController::class)->middleware('role:root');
     Route::resource('/permissions', PermissionController::class)->middleware('role:root');
     Route::resource('/users', UsersController::class)->middleware('role:root|admin');

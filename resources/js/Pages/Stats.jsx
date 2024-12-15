@@ -1,16 +1,16 @@
 import { FaCalendarAlt, FaUsers, FaUserCircle, FaPiggyBank, FaClipboardList, FaHandHoldingUsd, FaMoneyBillWave, FaTicketAlt } from 'react-icons/fa';
 
-export default function Stats() {
+export default function Stats({financialYears, members, accounts, users, loanPlans, loanTypes, loans, shares, tickets}) {
     const stats = [
-        { title: "Financial Years", value: 5, icon: <FaCalendarAlt className="text-blue-500 text-3xl" /> },
-        { title: "SACCO Members", value: 1200, icon: <FaUsers className="text-green-500 text-3xl" /> },
-        { title: "Member Accounts", value: 950, icon: <FaUserCircle className="text-yellow-500 text-3xl" /> },
-        { title: "Users", value: 50, icon: <FaUserCircle className="text-purple-500 text-3xl" /> },
-        { title: "Loan Plans", value: 10, icon: <FaClipboardList className="text-red-500 text-3xl" /> },
-        { title: "Loan Types", value: 6, icon: <FaHandHoldingUsd className="text-indigo-500 text-3xl" /> },
-        { title: "Loans", value: 200, icon: <FaMoneyBillWave className="text-teal-500 text-3xl" /> },
-        { title: "Shares", value: 150, icon: <FaPiggyBank className="text-orange-500 text-3xl" /> },
-        { title: "Support Tickets", value: 15, icon: <FaTicketAlt className="text-pink-500 text-3xl" /> },
+        { title: "Financial Years", value: financialYears, icon: <FaCalendarAlt className="text-blue-500 text-3xl" /> },
+        { title: "SACCO Members", value: members, icon: <FaUsers className="text-green-500 text-3xl" /> },
+        { title: "Member Accounts", value: accounts, icon: <FaUserCircle className="text-yellow-500 text-3xl" /> },
+        { title: "Users", value: users, icon: <FaUserCircle className="text-purple-500 text-3xl" /> },
+        { title: "Loan Plans", value: loanPlans, icon: <FaClipboardList className="text-red-500 text-3xl" /> },
+        { title: "Loan Types", value: loanTypes, icon: <FaHandHoldingUsd className="text-indigo-500 text-3xl" /> },
+        { title: "Loans", value: loans, icon: <FaMoneyBillWave className="text-teal-500 text-3xl" /> },
+        { title: "Shares Holders", value: shares, icon: <FaPiggyBank className="text-orange-500 text-3xl" /> },
+        { title: "Support Tickets", value: tickets, icon: <FaTicketAlt className="text-pink-500 text-3xl" /> },
     ];
 
     return (
