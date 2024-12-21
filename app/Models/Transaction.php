@@ -44,4 +44,19 @@ class Transaction extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    public function loan()
+    {
+        return $this->belongsTo(Loan::class);
+    }
+
+    public function financialYear()
+    {
+        return $this->belongsTo(FinancialYear::class);
+    }
 }

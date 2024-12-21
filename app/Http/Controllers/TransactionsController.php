@@ -26,7 +26,8 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('member')->get();
+        $transactions = Transaction::with('member', 'financialYear')->get();
+
         return Inertia::render('Transactions', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             'transactions' => $transactions,
@@ -100,7 +101,14 @@ class TransactionsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $transaction = Transaction::with('member', 'financialYear', 'loan', 'account')->findOrFail($id);
+
+        return Inertia::render('TransactionDetails', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'transaction' => $transaction,
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
     }
 
     /**

@@ -4,6 +4,7 @@ import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SelectInput from "@/Components/SelectInput";
+import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
@@ -20,6 +21,8 @@ export default function Transaction({
     const { data, setData, put, processing, errors, reset } = useForm({
         status: "Completed",
     });
+
+    const { can } = usePermission(permissions);
 
     const openModal = (transaction) => {
         setSelectedTransaction(transaction);
@@ -67,20 +70,18 @@ export default function Transaction({
                                     SNo
                                 </th>
                                 <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
+                                    Financial Year
+                                </th>
+                                <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
                                     Transaction ID
                                 </th>
                                 <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
                                     Member
                                 </th>
                                 <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
-                                    Transaction Type
+                                    Transaction Details
                                 </th>
-                                <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
-                                    Transaction Amount
-                                </th>
-                                <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
-                                    Transaction Date
-                                </th>
+
                                 <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
                                     Status
                                 </th>
@@ -104,6 +105,11 @@ export default function Transaction({
                                         {index + 1}
                                     </td>
                                     <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
+                                        {transaction.financial_year
+                                            ? transaction.financial_year.name
+                                            : "N/A"}
+                                    </td>
+                                    <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
                                         {transaction.reference_number}{" "}
                                     </td>
                                     <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
@@ -121,17 +127,23 @@ export default function Transaction({
                                         </div>
                                     </td>
                                     <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
-                                        {transaction.transaction_type}
+                                        <div className="flex flex-col">
+                                            <span>
+                                                Type{" "}
+                                                {transaction.transaction_type}
+                                                <br />
+                                                Amount: Ugx{" "}
+                                                {transaction.amount.toLocaleString()}
+                                            </span>
+                                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                On:{" "}
+                                                {new Date(
+                                                    transaction.transaction_date
+                                                ).toLocaleDateString()}
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
-                                        Ugx{" "}
-                                        {transaction.amount.toLocaleString()}
-                                    </td>
-                                    <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
-                                        {new Date(
-                                            transaction.transaction_date
-                                        ).toLocaleDateString()}
-                                    </td>
+
                                     <td className="p-3 border border-blue-gray-200 dark:border-gray-700">
                                         <span
                                             className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -171,29 +183,34 @@ export default function Transaction({
                                                 </button>
                                             </Dropdown.Trigger>
                                             <Dropdown.Content>
-                                                <Dropdown.Link
-                                                    href={route(
-                                                        "transactions.show",
-                                                        transaction.id
-                                                    )}
-                                                >
-                                                    View Transaction Details
-                                                </Dropdown.Link>
-
-                                                {transaction.status ===
-                                                    "Pending" && (
+                                                {can(
+                                                    "View Transaction Details"
+                                                ) && (
                                                     <Dropdown.Link
-                                                        href="#"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            openModal(
-                                                                transaction
-                                                            );
-                                                        }}
+                                                        href={route(
+                                                            "transactions.show",
+                                                            transaction.id
+                                                        )}
                                                     >
-                                                        Update Status
+                                                        View Transaction Details
                                                     </Dropdown.Link>
                                                 )}
+
+                                                {can("Update Transaction") &&
+                                                    transaction.status ===
+                                                        "Pending" && (
+                                                        <Dropdown.Link
+                                                            href="#"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                openModal(
+                                                                    transaction
+                                                                );
+                                                            }}
+                                                        >
+                                                            Update Status
+                                                        </Dropdown.Link>
+                                                    )}
                                             </Dropdown.Content>
                                         </Dropdown>
                                     </td>

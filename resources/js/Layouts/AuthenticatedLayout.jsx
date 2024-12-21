@@ -260,7 +260,7 @@ export default function Authenticated({
                                 <input
                                     type="text"
                                     placeholder="Search..."
-                                    className="border border-gray-300 dark:border-gray-600 rounded-md py-2 px-4 text-base w-full sm:w-80 focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-700 dark:text-gray-200"
+                                    className="border border-gray-300 dark:border-gray-600 rounded-md py-2 px-4 text-base w-fit sm:w-80 focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-700 dark:text-gray-200"
                                 />
                             </div>
                             <div className="flex items-center space-x-4">
