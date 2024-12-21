@@ -242,7 +242,7 @@ export default function ManageRolesPermissions({
                                             Existing Roles
                                         </h3>
                                         {roles.length > 0 ? (
-                                            <table className="min-w-full table-auto">
+                                            <table className="w-fit mt-4 mx-2 text-left table-auto min-w-max border-collapse border border-blue-gray-200 dark:border-gray-700">
                                                 <thead className="border-b">
                                                     <tr>
                                                         <th className="px-4 py-2 text-left text-dark-200 dark:text-gray-200">
@@ -375,7 +375,7 @@ export default function ManageRolesPermissions({
                                             Existing Permissions
                                         </h3>
                                         {permissions.length > 0 ? (
-                                            <table className="min-w-full table-auto">
+                                            <table className="w-fit mt-4 mx-2 text-left table-auto min-w-max border-collapse border border-blue-gray-200 dark:border-gray-700">
                                                 <thead className="border-b">
                                                     <tr>
                                                         <th className="px-4 py-2 text-left text-dark-200 dark:text-gray-200">
@@ -450,7 +450,8 @@ export default function ManageRolesPermissions({
             </div>
 
             {/* Confirmation Modal for Deletion */}
-            {(can("Delete Role") && can("Delete Permission")) &&
+            {can("Delete Role") &&
+                can("Delete Permission") &&
                 confirmDelete && (
                     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
                         <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
