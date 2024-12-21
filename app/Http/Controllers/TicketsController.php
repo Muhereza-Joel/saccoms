@@ -12,10 +12,10 @@ class TicketsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:Create Support Ticket')->only(['create','store']);
+        $this->middleware('permission:Create Support Ticket')->only(['create', 'store']);
         $this->middleware('permission:View Support Tickets')->only('index');
         $this->middleware('permission:View Support Ticket Details')->only('show');
-        $this->middleware('permission:Update Support Ticket')->only(['edit','update']);
+        $this->middleware('permission:Update Support Ticket')->only(['edit', 'update']);
         $this->middleware('permission:Delete Support Ticket')->only('destroy');
     }
 
@@ -56,10 +56,6 @@ class TicketsController extends Controller
             'error' => session('error'),
         ]);
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

@@ -30,6 +30,8 @@ class TransactionsController extends Controller
         return Inertia::render('Transactions', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             'transactions' => $transactions,
+            'success' => session('success'),
+            'error' => session('error'),
         ]);
     }
 
@@ -114,7 +116,14 @@ class TransactionsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'status' => 'required|string|max:20'
+        ]);
+
+        $ticket = Transaction::findOrFail($id);
+        $ticket->update($validated);
+
+        return redirect()->back()->with('success', 'Transaction Status Updated');
     }
 
     /**

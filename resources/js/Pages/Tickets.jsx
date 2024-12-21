@@ -141,7 +141,7 @@ export default function Tickets({
                 {showModal && (
                     <Modal show={showModal} onClose={closeModal}>
                         <div className="p-6">
-                            <h2 className="text-lg font-semibold">
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                                 Update Ticket Status
                             </h2>
                             <SelectInput
@@ -159,7 +159,10 @@ export default function Tickets({
                                 }
                             />
                             <div className="mt-4 flex justify-end">
-                                <button onClick={closeModal} className="mr-2">
+                                <button
+                                    onClick={closeModal}
+                                    className="mr-2 text-gray-900 dark:text-white"
+                                >
                                     Cancel
                                 </button>
                                 <PrimaryButton onClick={updateStatus}>

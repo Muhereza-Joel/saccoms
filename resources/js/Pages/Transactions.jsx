@@ -1,8 +1,47 @@
+import AlertError from "@/Components/AlertError";
+import AlertSuccess from "@/Components/AlertSuccess";
 import Dropdown from "@/Components/Dropdown";
+import Modal from "@/Components/Modal";
+import PrimaryButton from "@/Components/PrimaryButton";
+import SelectInput from "@/Components/SelectInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
-export default function Transaction({ auth, permissions, transactions }) {
+export default function Transaction({
+    auth,
+    permissions,
+    transactions,
+    success,
+    error,
+}) {
+    const [showModal, setShowModal] = useState(false);
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const { data, setData, put, processing, errors, reset } = useForm({
+        status: "Completed",
+    });
+
+    const openModal = (transaction) => {
+        setSelectedTransaction(transaction);
+        setData("status", "Completed");
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedTransaction(null);
+    };
+
+    const updateStatus = () => {
+        if (selectedTransaction) {
+            put(route("transactions.update", selectedTransaction.id), {
+                data,
+            });
+
+            closeModal();
+        }
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -16,8 +55,12 @@ export default function Transaction({ auth, permissions, transactions }) {
             <Head title="All Sacco Transactions" />
 
             <div className="py-2">
-                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg m-2 p-6 px-0">
-                    <table className="w-full mt-4 mx-2 text-left table-auto min-w-max border-collapse border border-blue-gray-200 dark:border-gray-700">
+                {/* Display Success and Error Messages */}
+                {success && <AlertSuccess success={success} />}
+                {error && <AlertError error={error} />}
+
+                <div className="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg m-2 p-6 px-0">
+                    <table className="w-full mt-4 mx-2 text-left table-auto border-collapse border border-blue-gray-200 dark:border-gray-700">
                         <thead>
                             <tr className="bg-blue-gray-50/50 text-gray-800 dark:text-gray-100 dark:bg-gray-800">
                                 <th className="p-3 border border-blue-gray-200 dark:border-gray-700">
@@ -136,6 +179,21 @@ export default function Transaction({ auth, permissions, transactions }) {
                                                 >
                                                     View Transaction Details
                                                 </Dropdown.Link>
+
+                                                {transaction.status ===
+                                                    "Pending" && (
+                                                    <Dropdown.Link
+                                                        href="#"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            openModal(
+                                                                transaction
+                                                            );
+                                                        }}
+                                                    >
+                                                        Update Status
+                                                    </Dropdown.Link>
+                                                )}
                                             </Dropdown.Content>
                                         </Dropdown>
                                     </td>
@@ -144,6 +202,46 @@ export default function Transaction({ auth, permissions, transactions }) {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Show Update Status Model */}
+                {showModal && (
+                    <Modal show={showModal} onClose={closeModal}>
+                        <div className="p-6">
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                                Update Transaction Status
+                            </h2>
+
+                            <SelectInput
+                                options={[
+                                    {
+                                        value: "Completed",
+                                        label: "Completed",
+                                    },
+                                    { value: "Failed", label: "Failed" },
+                                ]}
+                                className="block w-full"
+                                onChange={(e) =>
+                                    setData("status", e.target.value)
+                                }
+                            />
+
+                            <div className="mt-4 flex justify-end">
+                                <button
+                                    onClick={closeModal}
+                                    className="mr-2 text-gray-900 dark:text-white"
+                                >
+                                    Cancel
+                                </button>
+                                <PrimaryButton
+                                    onClick={updateStatus}
+                                    disabled={processing}
+                                >
+                                    Update
+                                </PrimaryButton>
+                            </div>
+                        </div>
+                    </Modal>
+                )}
             </div>
         </AuthenticatedLayout>
     );
