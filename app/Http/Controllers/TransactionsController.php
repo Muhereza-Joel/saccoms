@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\FinancialYear;
 use App\Models\Member;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -47,6 +49,9 @@ class TransactionsController extends Controller
         return Inertia::render('CreateTransaction', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             'member' => $member,
+            'account_id' => $id,
+            'success' => session('success'),
+            'error' => session('error'),
         ]);
     }
 
@@ -55,8 +60,36 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'member_id' => 'required|string|exists:members,id',
+            'account_id' => 'required|string|exists:accounts,id',
+            'amount' => 'required|numeric',
+            'payment_method' => 'required|string',
+            'status' => 'required|string',
+            'remarks' => 'required|string',
+            'transaction_type' => 'required|string'
+        ]);
+
+        $financial_year = FinancialYear::where('status', 'active')->first();
+        if ($financial_year) {
+            $validated['financial_year_id'] = $financial_year->id;
+        } else {
+            $validated['financial_year_id'] = null;
+        }
+
+        // Improved reference number with structured format
+        $referenceNumber = strtoupper('TR-' . now()->format('Ymd') . '-' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT));
+        $validated['reference_number'] = $referenceNumber;
+
+        // Improved transaction date using Carbon
+        $validated['transaction_date'] = now();
+
+        $transaction = Transaction::create($validated);
+
+        return redirect()->back()->with('success', 'Transaction created successfully!');
     }
+
 
     /**
      * Display the specified resource.

@@ -1,3 +1,5 @@
+import AlertError from "@/Components/AlertError";
+import AlertSuccess from "@/Components/AlertSuccess";
 import InfoRow from "@/Components/InfoRow";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -9,10 +11,42 @@ import TextInput from "@/Components/TextInput";
 import { usePermission } from "@/Hooks/usePermissions";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
+import { useRef } from "react";
 
-export default function CreateTransaction({ auth, permissions, member }) {
+export default function CreateTransaction({
+    auth,
+    permissions,
+    member,
+    account_id,
+    success,
+    error,
+}) {
     const { can } = usePermission(permissions);
-    const { data, setData, post, errors, processing, reset } = useForm({});
+    const quillRef = useRef(null);
+
+    const { data, setData, post, errors, processing, reset } = useForm({
+        member_id: member.id,
+        account_id: account_id,
+        transaction_type: "",
+        amount: "",
+        loan_id: "",
+        payment_method: "",
+        status: "",
+        remarks: "",
+    });
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("transactions.store"), {
+            onSuccess: () => {
+                reset(); // Reset the form state
+                if (quillRef.current) {
+                    quillRef.current.getEditor().setText(""); // Clear QuillEditor content
+                }
+            },
+        });
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -26,6 +60,12 @@ export default function CreateTransaction({ auth, permissions, member }) {
             <Head title="Create Transactions" />
 
             <div className="p-2">
+                {/* Display Success Message */}
+                {success && <AlertSuccess success={success} />}
+
+                {/* Display Error Message */}
+                {error && <AlertError error={error} />}
+
                 <div className="max-w-full rounded shadow-sm mx-2 overflow-hidden bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-2">
                         <div className="space-y-4 p-6 rounded-md border-2 dark:border-gray-600">
@@ -84,7 +124,7 @@ export default function CreateTransaction({ auth, permissions, member }) {
 
                         <div className="space-y-4 p-6 rounded-md border-2 dark:border-gray-600">
                             <Section title="Transaction Details">
-                                <form className="space-y-3">
+                                <form className="space-y-3" onSubmit={submit}>
                                     <div>
                                         <InputLabel
                                             htmlFor="transaction_type"
@@ -198,7 +238,7 @@ export default function CreateTransaction({ auth, permissions, member }) {
                                             }
                                         />
                                         <InputError
-                                            message={errors.transaction_type}
+                                            message={errors.payment_method}
                                             className="mt-2"
                                         />
                                     </div>
@@ -206,7 +246,7 @@ export default function CreateTransaction({ auth, permissions, member }) {
                                     <div>
                                         <InputLabel
                                             htmlFor="payment_method"
-                                            value="Payment Method"
+                                            value="Transaction Status"
                                         />
 
                                         <SelectInput
@@ -217,7 +257,7 @@ export default function CreateTransaction({ auth, permissions, member }) {
                                             options={[
                                                 {
                                                     value: "",
-                                                    label: "Select Payment Method",
+                                                    label: "Select Transaction Status",
                                                 },
                                                 {
                                                     value: "Pending",
@@ -251,7 +291,19 @@ export default function CreateTransaction({ auth, permissions, member }) {
                                             value="Notes about this transaction"
                                         />
 
-                                        <QuillEditor/>
+                                        <QuillEditor
+                                            id="remarks"
+                                            ref={quillRef}
+                                            value={data.remarks}
+                                            isFocused={false}
+                                            placeholder="Write notes here..."
+                                            onChange={(e) =>
+                                                setData(
+                                                    "remarks",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
 
                                         <InputError
                                             message={errors.remarks}

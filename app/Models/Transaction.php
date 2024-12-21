@@ -16,7 +16,7 @@ class Transaction extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
-        'financial_year',
+        'financial_year_id',
         'member_id',
         'account_id',
         'loan_id',
