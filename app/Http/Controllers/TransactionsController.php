@@ -60,6 +60,40 @@ class TransactionsController extends Controller
     }
 
 
+    public function myTransactions()
+    {
+        $user = Auth::user();
+
+        // Access the related member using the defined relationship
+        $member = $user->member;
+
+        // If no member exists for this user, handle accordingly
+        if (!$member) {
+            return Inertia::render('MemberTransactions', [
+                'permissions' => $user->getAllPermissions()->pluck('name'),
+                'transactions' => [], // No transactions for non-members
+                'success' => session('success'),
+                'error' => session('error'),
+            ]);
+        }
+
+        // Fetch transactions for the member with optimized relationships and pagination
+        $transactions = Transaction::with(['member', 'financialYear'])
+            ->where('member_id', $member->id)
+            ->paginate(10); // Use paginate for better performance with large datasets
+
+        // Render the data to Inertia
+        return Inertia::render('MemberTransactions', [
+            'permissions' => $user->getAllPermissions()->pluck('name'),
+            'transactions' => $transactions->getCollection(), // Return the collection of transactions
+            'links' => $transactions->linkCollection(), // Include pagination links
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */

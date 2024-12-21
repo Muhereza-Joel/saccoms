@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/member/{id}/account/create', [AccountsController::class, 'createMemberAccount'])->name('create-member-account');
     Route::get('/member/{id}/transactions', [TransactionsController::class, 'memberTransactions'])->name('member.transactions');
     Route::get('/member/{id}/loans', [LoansController::class, 'memberLoans'])->name('member.loans');
+    Route::get('/member/transactions', [TransactionsController::class, 'myTransactions'])->name('myTransactions');
+    Route::get('/member/loans', [LoansController::class, 'myLoans'])->name('myLoans');
     Route::resource('/accounts', AccountsController::class);
     Route::resource('/financial-years', FinancialYearController::class);
     Route::resource('/loan-types', LoanTypeController::class);

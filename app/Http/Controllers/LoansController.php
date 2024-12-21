@@ -57,6 +57,39 @@ class LoansController extends Controller
         ]);
     }
 
+
+    public function myLoans()
+    {
+        $user = Auth::user();
+
+        // Access the related member using the defined relationship
+        $member = $user->member;
+
+        // If no member exists for this user, return empty loans
+        if (!$member) {
+            return Inertia::render('Loans', [
+                'permissions' => $user->getAllPermissions()->pluck('name'),
+                'loans' => [], // No loans for non-members
+                'links' => [],
+                'success' => session('success'),
+                'error' => session('error'),
+            ]);
+        }
+
+        // Fetch loans for the member
+        $loans = Loan::with('member')->where('member_id', $member->id)->paginate(10);
+
+        return Inertia::render('Loans', [
+            'permissions' => $user->getAllPermissions()->pluck('name'),
+            'loans' => $loans->getCollection(),
+            'links' => $loans->linkCollection(),
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */

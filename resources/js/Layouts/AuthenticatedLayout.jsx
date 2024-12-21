@@ -116,6 +116,19 @@ export default function Authenticated({
                         </li>
                     )}
 
+                    {can("View My Transactions") && (
+                        <li>
+                            <NavLink
+                                href={route("myTransactions")}
+                                active={route().current("myTransactions")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaExchangeAlt className="mr-3 text-xl" />
+                                My Transactions
+                            </NavLink>
+                        </li>
+                    )}
+
                     {can("Create Role") && (
                         <li>
                             <NavLink
@@ -198,6 +211,19 @@ export default function Authenticated({
                             >
                                 <FaMoneyBill className="mr-3 text-xl" />
                                 Loans
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {can("View My Loans") && (
+                        <li>
+                            <NavLink
+                                href={route("myLoans")}
+                                active={route().current("myLoans")}
+                                className="flex items-center w-full px-4 py-4 rounded-md text-gray-900 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-0"
+                            >
+                                <FaMoneyBill className="mr-3 text-xl" />
+                                My Loans
                             </NavLink>
                         </li>
                     )}

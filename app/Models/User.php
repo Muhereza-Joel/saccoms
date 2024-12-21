@@ -65,4 +65,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(SupportTicket::class, 'assigned_to', 'id');
     }
+
+    // connect the user to the member
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'email', 'email');
+    }
 }
