@@ -26,8 +26,10 @@ class TransactionsController extends Controller
      */
     public function index()
     {
+        $transactions = Transaction::with('member')->get();
         return Inertia::render('Transactions', [
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'transactions' => $transactions,
         ]);
     }
 

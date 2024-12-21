@@ -60,7 +60,11 @@ export default function FinancialYear({ auth, years, permissions, links }) {
                             {years.map((year, index) => (
                                 <tr
                                     key={year.id}
-                                    className="text-gray-800 dark:text-gray-100"
+                                    className={`text-gray-800 dark:text-gray-100 ${
+                                        index % 2 === 0
+                                            ? "bg-white dark:bg-gray-900"
+                                            : "bg-blue-gray-50/50 dark:bg-gray-800"
+                                    }`}
                                 >
                                     <td class="p-3 border-b dark:border-gray-700">
                                         {index + 1}
@@ -95,7 +99,7 @@ export default function FinancialYear({ auth, years, permissions, links }) {
                         </tbody>
                     </table>
 
-                    <Pagination links={links}/>
+                    <Pagination links={links} />
                 </div>
             </div>
         </AuthenticatedLayout>

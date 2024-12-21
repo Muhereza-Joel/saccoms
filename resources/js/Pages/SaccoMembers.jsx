@@ -160,7 +160,14 @@ export default function SaccoMembers({ auth, members, links, permissions }) {
                                         </thead>
                                         <tbody>
                                             {members.map((member, index) => (
-                                                <tr key={member.id}>
+                                                <tr
+                                                    key={member.id}
+                                                    className={`text-gray-800 dark:text-gray-100 ${
+                                                        index % 2 === 0
+                                                            ? "bg-white dark:bg-gray-900"
+                                                            : "bg-blue-gray-50/50 dark:bg-gray-800"
+                                                    }`}
+                                                >
                                                     <td class="p-3 border-b dark:border-gray-700">
                                                         {index + 1}
                                                     </td>
@@ -320,7 +327,7 @@ export default function SaccoMembers({ auth, members, links, permissions }) {
                                     </table>
                                 </div>
                             </div>
-                        <Pagination links={links} />
+                            <Pagination links={links} />
                         </div>
                     </div>
                 </div>

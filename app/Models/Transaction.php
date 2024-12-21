@@ -39,4 +39,9 @@ class Transaction extends Model
             }
         });
     }
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class);
+    }
 }
