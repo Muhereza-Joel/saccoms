@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Member;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -41,8 +42,6 @@ class MembersController extends Controller
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
         ]);
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -124,6 +123,8 @@ class MembersController extends Controller
     public function show(string $id)
     {
         $accounts = Account::where('member_id', $id)->get();
+        //get last five transactions for a member
+        $transactions = Transaction::where('member_id', $id)->limit(5)->get();
         $member = Member::findOrFail($id);
         $member['member_photo'] = asset($member->member_photo);
         return Inertia::render(
@@ -131,7 +132,7 @@ class MembersController extends Controller
             [
                 'member' => $member,
                 'loans' => [],
-                'transactions' => [],
+                'transactions' => $transactions,
                 'accounts' => $accounts,
                 'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
             ]

@@ -291,19 +291,22 @@ export default function MemberDetails({
                                     {transactions.length > 0 ? (
                                         transactions.map(
                                             (transaction, index) => (
-                                                <li
-                                                    key={index}
-                                                    className="flex justify-between text-sm text-gray-600 dark:text-gray-400"
-                                                >
-                                                    <span>
-                                                        {
-                                                            transaction.description
+                                                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                                                    <InfoRow
+                                                        key={index}
+                                                        label="Transaction type"
+                                                        value={
+                                                            transaction.transaction_type
                                                         }
-                                                    </span>
-                                                    <span>
-                                                        {transaction.amount}
-                                                    </span>
-                                                </li>
+                                                    />
+                                                    <InfoRow
+                                                        key={index}
+                                                        label="Transaction amount"
+                                                        value={
+                                                            transaction.amount
+                                                        }
+                                                    />
+                                                </div>
                                             )
                                         )
                                     ) : (
