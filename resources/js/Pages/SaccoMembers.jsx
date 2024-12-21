@@ -256,24 +256,12 @@ export default function SaccoMembers({ auth, members, links, permissions }) {
                                                             )}
 
                                                             {can(
-                                                                "Create Transaction"
-                                                            ) && (
-                                                                <Dropdown.Link
-                                                                    href={route(
-                                                                        "transactions.create"
-                                                                    )}
-                                                                >
-                                                                    Create
-                                                                    Transaction
-                                                                </Dropdown.Link>
-                                                            )}
-
-                                                            {can(
                                                                 "View Member Transactions"
                                                             ) && (
                                                                 <Dropdown.Link
                                                                     href={route(
-                                                                        "members.index"
+                                                                        "member.transactions",
+                                                                        member.id
                                                                     )}
                                                                 >
                                                                     Member
@@ -290,19 +278,6 @@ export default function SaccoMembers({ auth, members, links, permissions }) {
                                                                     )}
                                                                 >
                                                                     Member Loans
-                                                                </Dropdown.Link>
-                                                            )}
-
-                                                            {can(
-                                                                "View Member Tickets"
-                                                            ) && (
-                                                                <Dropdown.Link
-                                                                    href={route(
-                                                                        "members.index"
-                                                                    )}
-                                                                >
-                                                                    Member
-                                                                    Tickets
                                                                 </Dropdown.Link>
                                                             )}
                                                         </Dropdown.Content>

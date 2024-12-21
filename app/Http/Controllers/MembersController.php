@@ -35,7 +35,7 @@ class MembersController extends Controller
         });
 
         return Inertia::render('SaccoMembers', [
-            'members' => $members, 
+            'members' => $members,
             'links' => $paginatedMembers->linkCollection(), // Pagination links
             'meta' => $paginatedMembers->toArray(), // Metadata like current page, total, etc.
             'permissions' => Auth::user()->getAllPermissions()->pluck('name'),

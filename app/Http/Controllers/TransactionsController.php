@@ -36,6 +36,30 @@ class TransactionsController extends Controller
         ]);
     }
 
+
+    public function memberTransactions($id)
+    {
+        // Ensure the member exists
+        Member::findOrFail($id);
+
+        // Fetch transactions for the member with optimized relationships and pagination
+        $transactions = Transaction::with([
+            'member',
+            'financialYear'
+        ])->where('member_id', $id)->get();
+
+        // dd($transactions);
+
+        // Render the data to Inertia
+        return Inertia::render('MemberTransactions', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'transactions' => $transactions,
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
