@@ -137,7 +137,7 @@ export default function CreateTicket({
                                                     .filter((user) => {
                                                         // Filter out users with "root" or "admin" roles if the current user lacks permission
                                                         const restrictedRoles =
-                                                            ["root"];
+                                                            ["root", "member"];
                                                         if (
                                                             !can(
                                                                 "Create Role"

@@ -19,10 +19,10 @@ class LoansController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:Create Loan')->only(['create','store','createMemberLoanApplication']);
+        $this->middleware('permission:Create Loan')->only(['create', 'store', 'createMemberLoanApplication']);
         $this->middleware('permission:View Loans')->only('index');
         $this->middleware('permission:View Loan Details')->only('show');
-        $this->middleware('permission:Update Loan')->only(['edit','update','updateLoanStatus']);
+        $this->middleware('permission:Update Loan')->only(['edit', 'update', 'updateLoanStatus']);
         $this->middleware('permission:Delete Loan')->only('destroy');
     }
 
@@ -32,6 +32,20 @@ class LoansController extends Controller
     public function index()
     {
         $loans = Loan::with('member')->paginate(10);
+        $loansCollection = $loans->getCollection();
+
+        return Inertia::render('Loans', [
+            'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+            'loans' => $loansCollection,
+            'links' => $loans->linkCollection(),
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
+    }
+
+    public function memberLoans($id)
+    {
+        $loans = Loan::with('member')->where('member_id', $id)->paginate(10);
         $loansCollection = $loans->getCollection();
 
         return Inertia::render('Loans', [

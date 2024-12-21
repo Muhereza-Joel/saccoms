@@ -274,7 +274,8 @@ export default function SaccoMembers({ auth, members, links, permissions }) {
                                                             ) && (
                                                                 <Dropdown.Link
                                                                     href={route(
-                                                                        "members.index"
+                                                                        "member.loans",
+                                                                        member.id
                                                                     )}
                                                                 >
                                                                     Member Loans

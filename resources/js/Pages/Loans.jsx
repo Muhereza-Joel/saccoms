@@ -14,7 +14,14 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Loans({ auth, permissions, loans, links, success, error }) {
+export default function Loans({
+    auth,
+    permissions,
+    loans,
+    links,
+    success,
+    error,
+}) {
     const { can } = usePermission(permissions);
     const [updateLoanStatus, setUpdateLoanStatus] = useState(false);
     const [id, setID] = useState(null);
@@ -89,7 +96,7 @@ export default function Loans({ auth, permissions, loans, links, success, error 
 
                 {/* Display Error Message */}
                 {error && <AlertError error={error} />}
-                <div className="bg-white dark:bg-gray-800 overflow-y-auto shadow-sm sm:rounded-lg m-2 p-6 px-0 h-full">
+                <div className="bg-white dark:bg-gray-800  shadow-sm sm:rounded-lg m-2 p-6 px-0 h-full">
                     <table className="w-full mt-2 text-left table-auto min-w-max overflow-y-visible">
                         <thead>
                             <tr className="text-gray-800 dark:text-gray-100">
@@ -224,7 +231,7 @@ export default function Loans({ auth, permissions, loans, links, success, error 
                     </table>
                 </div>
 
-                <Pagination links={links}/>
+                <Pagination links={links} />
 
                 {/* Approve Loan Modal */}
                 <Modal show={updateLoanStatus} onClose={closeModal}>
